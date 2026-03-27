@@ -24,11 +24,13 @@ if (isset($_GET["action"])) {
                 }
             }
 
-            if ($path !== " " || !isset($_FILES['image']) || $_FILES['image']['size'] == 0) {
-            try {
-                $db->runQuery("INSERT INTO slider VALUES (null,?,?,?,?,?)", [$path, $title1, $title2, $title3, $order]);
-                adminAlert('success', 'Slider added successfully!');
-            } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+            if ($path !== " ") {
+                try {
+                    $db->runQuery("INSERT INTO slider VALUES (null,?,?,?,?,?)", [$path, $title1, $title2, $title3, $order]);
+                    adminAlert('success', 'Slider added successfully!');
+                } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+            } elseif (!isset($_FILES['image']) || $_FILES['image']['size'] == 0) {
+                adminAlert('error', 'Please select an image for the slider.');
             }
         }
         ?>

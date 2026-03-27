@@ -12,8 +12,3 @@
     Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
     Header set Pragma "no-cache"
 </IfModule>
-
-# Disable PHP execution in upload directories
-<IfModule mod_rewrite.c>
-    RewriteRule ^content/img/.*\.php$ - [F,L]
-</IfModule>

@@ -1,0 +1,20 @@
+# Security: Prevent PHP execution in upload directories
+# Covers team/, alumni/, and any future subdirectories
+
+# Disable PHP execution
+<FilesMatch "\.ph(p[3457]?|t|tml)$">
+    Require all denied
+</FilesMatch>
+
+# Block other dangerous extensions
+<FilesMatch "\.(cgi|pl|py|sh|asp|aspx|exe|bat|cmd)$">
+    Require all denied
+</FilesMatch>
+
+# Disable script execution
+Options -ExecCGI -Indexes
+
+# Block access to hidden files
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

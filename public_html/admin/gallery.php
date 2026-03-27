@@ -34,11 +34,11 @@ if (isset($_GET["action"])) {
                 }
 
                 if (!$uploadError) {
-                try {
-                    $db->runQuery("INSERT INTO gallery (title, images, g_order) VALUES (?,?,?)",
-                        [$title, implode("|", $imageData), $order]);
-                    adminAlert('success', 'Gallery added successfully!');
-                } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                    try {
+                        $db->runQuery("INSERT INTO gallery (title, images, g_order) VALUES (?,?,?)",
+                            [$title, implode("|", $imageData), $order]);
+                        adminAlert('success', 'Gallery added successfully!');
+                    } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
                 }
             } else {
                 adminAlert('error', 'Please select at least one image.');
@@ -91,11 +91,11 @@ if (isset($_GET["action"])) {
                     }
                 }
                 if (!$uploadError) {
-                try {
-                    $db->runQuery("UPDATE gallery SET title=?, images=?, g_order=? WHERE id=?",
-                        [$title, implode("|", $imageData), $order, $id]);
-                    adminAlert('success', 'Gallery updated with new images!');
-                } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                    try {
+                        $db->runQuery("UPDATE gallery SET title=?, images=?, g_order=? WHERE id=?",
+                            [$title, implode("|", $imageData), $order, $id]);
+                        adminAlert('success', 'Gallery updated with new images!');
+                    } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
                 }
             } else {
                 try {

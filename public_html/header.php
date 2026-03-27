@@ -129,7 +129,7 @@ while ($m = $menuDb->fetchObject()) {
                 <div class="flex items-center justify-between h-16 lg:h-20">
                     <!-- Logo -->
                     <a href="index.php" class="flex-shrink-0">
-                        <img src="content/img/logo-school.png" alt="YDI" class="h-12 lg:h-14 w-auto drop-shadow-lg hover:drop-shadow-xl hover:scale-105 transition-all duration-300" loading="lazy" decoding="async">
+                        <img src="content/img/logo-school.png" alt="YDI" class="h-12 lg:h-14 w-auto drop-shadow-lg hover:drop-shadow-xl hover:scale-105 transition-all duration-300" fetchpriority="high">
                     </a>
 
                     <!-- Desktop Navigation -->
@@ -147,7 +147,7 @@ while ($m = $menuDb->fetchObject()) {
     if (!empty($children)) { ?>
                                 <div class="relative group">
                                     <button class="flex items-center gap-1 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary-500 transition-colors">
-                                        <?php echo htmlspecialchars(html_entity_decode($men->menu_label, ENT_QUOTES, 'UTF-8')); ?>
+                                        <?php echo safeHtml($men->menu_label); ?>
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
@@ -155,14 +155,14 @@ while ($m = $menuDb->fetchObject()) {
                                     <div class="absolute top-full left-0 mt-1 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
                                         <?php foreach ($children as $sub) { ?>
                                             <a href="<?php echo htmlspecialchars($sub->menu_link); ?>" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-slate-700 hover:text-primary-500 transition-colors">
-                                                <?php echo htmlspecialchars(html_entity_decode($sub->menu_label, ENT_QUOTES, 'UTF-8')); ?>
+                                                <?php echo safeHtml($sub->menu_label); ?>
                                             </a>
                                         <?php } ?>
                                     </div>
                                 </div>
                         <?php } else { ?>
                                 <a href="<?php echo htmlspecialchars($men->menu_link); ?>" class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary-500 transition-colors">
-                                    <?php echo htmlspecialchars(html_entity_decode($men->menu_label, ENT_QUOTES, 'UTF-8')); ?>
+                                    <?php echo safeHtml($men->menu_label); ?>
                                 </a>
                         <?php }
 } ?>
@@ -203,7 +203,7 @@ while ($m = $menuDb->fetchObject()) {
     if (!empty($children_m)) { ?>
                                 <div x-data="{ open: false }">
                                     <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-3 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800">
-                                        <?php echo htmlspecialchars(html_entity_decode($men_m->menu_label, ENT_QUOTES, 'UTF-8')); ?>
+                                        <?php echo safeHtml($men_m->menu_label); ?>
                                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
@@ -211,14 +211,14 @@ while ($m = $menuDb->fetchObject()) {
                                     <div x-show="open" x-cloak x-collapse class="pl-4 mt-1 space-y-1">
                                         <?php foreach ($children_m as $sub_m) { ?>
                                             <a href="<?php echo htmlspecialchars($sub_m->menu_link); ?>" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary-500">
-                                                <?php echo htmlspecialchars(html_entity_decode($sub_m->menu_label, ENT_QUOTES, 'UTF-8')); ?>
+                                                <?php echo safeHtml($sub_m->menu_label); ?>
                                             </a>
                                         <?php } ?>
                                     </div>
                                 </div>
                         <?php } else { ?>
                                 <a href="<?php echo htmlspecialchars($men_m->menu_link); ?>" class="px-4 py-3 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800">
-                                    <?php echo htmlspecialchars(html_entity_decode($men_m->menu_label, ENT_QUOTES, 'UTF-8')); ?>
+                                    <?php echo safeHtml($men_m->menu_label); ?>
                                 </a>
                         <?php }
 } ?>
