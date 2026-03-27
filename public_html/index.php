@@ -1,25 +1,3 @@
-<?php
-function shapeSpace_block_proxy_visits() {
-    $headers = array('CLIENT_IP','FORWARDED','FORWARDED_FOR','FORWARDED_FOR_IP','VIA','X_FORWARDED','X_FORWARDED_FOR','HTTP_CLIENT_IP','HTTP_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED_FOR_IP','HTTP_PROXY_CONNECTION','HTTP_VIA','HTTP_X_FORWARDED','HTTP_X_FORWARDED_FOR');
-    foreach ($headers as $header) {
-        if (isset($_SERVER[$header])) {
-            die('Proxy access not allowed.');
-        }
-    }
-}
-
-function shapeSpace_block_proxy_visits_port() {
-    $ports = array(80,81,553,554,1080,3128,4480,6588,8000,8080);
-    foreach ($ports as $port) {
-        if (@fsockopen($_SERVER['REMOTE_ADDR'], $port, $errno, $errstr, 5)) {
-            die('Proxy access not allowed.');
-        }
-    }
-}
-
-shapeSpace_block_proxy_visits();
-shapeSpace_block_proxy_visits_port();
-?>
 <?php include("header.php"); ?>
 <?php include("banner.php"); ?>
 
@@ -89,7 +67,7 @@ if (count($clientsList) > 0) {
                 <div class="relative mb-4 mx-auto w-28 h-28 lg:w-32 lg:h-32">
                     <div class="absolute inset-0 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 p-1 transform group-hover:scale-105 transition-transform duration-300">
                         <div class="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center p-3">
-                            <img src="<?php echo htmlspecialchars($cl->image); ?>" alt="<?php echo safeHtml($cl->title); ?>" class="max-w-full max-h-full object-contain">
+                            <img loading="lazy" decoding="async" src="<?php echo htmlspecialchars($cl->image); ?>" alt="<?php echo safeHtml($cl->title); ?>" class="max-w-full max-h-full object-contain">
                         </div>
                     </div>
                 </div>
@@ -128,7 +106,7 @@ if (count($galleryItems) > 0) {
                 <a href="gallery.php?id=<?php echo (int)$image->id; ?>" class="block aspect-square bg-slate-100 dark:bg-slate-800">
                 <?php } ?>
                     <?php if ($imageExists) { ?>
-                    <img src="<?php echo htmlspecialchars($mainImage); ?>" alt="<?php echo $decodedTitle; ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <img loading="lazy" decoding="async" src="<?php echo htmlspecialchars($mainImage); ?>" alt="<?php echo $decodedTitle; ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     <?php } else { ?>
                     <div class="w-full h-full flex flex-col items-center justify-center text-slate-400 dark:text-slate-500">
                         <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -214,7 +192,7 @@ $totalPages = ceil($totalVideos / $videosPerPage);
                         foreach ($pageVideos as $vid) { ?>
                         <div class="group relative bg-white dark:bg-slate-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
                             <div class="relative aspect-video">
-                                <img src="https://img.youtube.com/vi/<?php echo htmlspecialchars($vid->link); ?>/hqdefault.jpg" alt="Video thumbnail" class="w-full h-full object-cover">
+                                <img loading="lazy" decoding="async" src="https://img.youtube.com/vi/<?php echo htmlspecialchars($vid->link); ?>/hqdefault.jpg" alt="Video thumbnail" class="w-full h-full object-cover">
                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent flex items-center justify-center">
                                     <a href="https://www.youtube.com/watch?v=<?php echo htmlspecialchars($vid->link); ?>" data-fancybox="videos" class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-lg">
                                         <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
@@ -254,7 +232,7 @@ $totalPages = ceil($totalVideos / $videosPerPage);
 <!-- CTA Section -->
 <section class="relative py-24 overflow-hidden">
     <div class="absolute inset-0">
-        <img src="content/img/home/promotion-1.jpg" alt="Background" class="w-full h-full object-cover">
+        <img loading="lazy" decoding="async" src="content/img/home/promotion-1.jpg" alt="Background" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-r from-primary-600/90 to-secondary-600/90"></div>
     </div>
     <div class="absolute top-10 left-10 w-32 h-32 border border-white/20 rounded-full animate-float hidden lg:block"></div>
@@ -297,7 +275,7 @@ if (count($programsList) > 0) {
             <?php foreach ($programsList as $p) { ?>
             <div class="group relative bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 card-hover">
                 <div class="relative aspect-[4/3] overflow-hidden">
-                    <img src="<?php echo htmlspecialchars($p->image); ?>" alt="<?php echo safeHtml($p->p_title); ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <img loading="lazy" decoding="async" src="<?php echo htmlspecialchars($p->image); ?>" alt="<?php echo safeHtml($p->p_title); ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent"></div>
                     <div class="absolute top-4 left-4">
                         <span class="px-3 py-1 bg-primary-500 text-white text-xs font-semibold rounded-full">Program</span>
@@ -340,7 +318,7 @@ if (count($teamList) > 0) {
                 <div class="relative mb-4 mx-auto w-32 h-32 lg:w-40 lg:h-40">
                     <div class="absolute inset-0 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 p-1 transform group-hover:scale-105 transition-transform duration-300">
                         <div class="w-full h-full rounded-full overflow-hidden bg-white dark:bg-slate-800">
-                            <img src="<?php echo htmlspecialchars($member->image); ?>" alt="<?php echo safeHtml($member->title); ?>" class="w-full h-full object-cover">
+                            <img loading="lazy" decoding="async" src="<?php echo htmlspecialchars($member->image); ?>" alt="<?php echo safeHtml($member->title); ?>" class="w-full h-full object-cover">
                         </div>
                     </div>
                 </div>
@@ -382,7 +360,7 @@ if (count($alumniList) > 0) {
                 <div class="relative mb-4 mx-auto w-32 h-32 lg:w-40 lg:h-40">
                     <div class="absolute inset-0 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 p-1 transform group-hover:scale-105 transition-transform duration-300">
                         <div class="w-full h-full rounded-full overflow-hidden bg-white dark:bg-slate-800">
-                            <img src="<?php echo htmlspecialchars($alum->image); ?>" alt="<?php echo safeHtml($alum->title); ?>" class="w-full h-full object-cover">
+                            <img loading="lazy" decoding="async" src="<?php echo htmlspecialchars($alum->image); ?>" alt="<?php echo safeHtml($alum->title); ?>" class="w-full h-full object-cover">
                         </div>
                     </div>
                 </div>

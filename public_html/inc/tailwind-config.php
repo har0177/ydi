@@ -3,10 +3,11 @@
  * Centralized Tailwind Configuration
  * Include this file in all pages that use Tailwind CSS
  * Single source of truth for colors, fonts, and theme settings
+ * Pinned to v3.4.17 for stability and caching
  */
 ?>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
+<!-- Tailwind CSS (pinned version for caching + performance) -->
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <script>
     tailwind.config = {
         darkMode: 'class',

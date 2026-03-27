@@ -260,8 +260,8 @@
 
     </div> <!-- End of main wrapper from header -->
 
-    <!-- Fancybox JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <!-- Fancybox JS (pinned version) -->
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.umd.js"></script>
     <script>
         // Initialize Fancybox
         Fancybox.bind("[data-fancybox]", {

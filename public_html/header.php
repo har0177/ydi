@@ -9,6 +9,21 @@ header("X-Frame-Options: SAMEORIGIN");
 header("X-XSS-Protection: 1; mode=block");
 header("Referrer-Policy: strict-origin-when-cross-origin");
 ?>
+<?php
+// Fetch menu data ONCE for both desktop and mobile nav
+$menuDb = new database();
+$menuDb->query("SELECT * FROM menus WHERE parent_id IS NULL ORDER BY menu_order ASC");
+$mainMenus = [];
+while ($m = $menuDb->fetchObject()) {
+    $subDb = new database();
+    $subDb->query("SELECT * FROM menus WHERE parent_id = ? ORDER BY menu_order ASC", array($m->menu_id));
+    $subs = [];
+    while ($s = $subDb->fetchObject()) {
+        $subs[] = $s;
+    }
+    $mainMenus[] = ['item' => $m, 'children' => $subs];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,19 +44,24 @@ header("Referrer-Policy: strict-origin-when-cross-origin");
     <!-- Favicon -->
     <link rel="shortcut icon" href="content/img/favicon.png">
 
-    <!-- Google Fonts -->
+    <!-- Preconnect to external origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://img.youtube.com">
+
+    <!-- Google Fonts (swap=display for fast first paint) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <?php include 'inc/tailwind-config.php'; ?>
 
-    <!-- Alpine.js with Collapse Plugin -->
-    <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Alpine.js (pinned versions) -->
+    <script defer src="https://unpkg.com/@alpinejs/collapse@3.14.8/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.14.8/dist/cdn.min.js"></script>
 
-    <!-- Fancybox CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
+    <!-- Fancybox CSS (pinned version) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.css"/>
 
     <style>
         [x-cloak] { display: none !important; }
@@ -109,7 +129,7 @@ header("Referrer-Policy: strict-origin-when-cross-origin");
                 <div class="flex items-center justify-between h-16 lg:h-20">
                     <!-- Logo -->
                     <a href="index.php" class="flex-shrink-0">
-                        <img src="content/img/logo-school.png" alt="YDI" class="h-12 lg:h-14 w-auto drop-shadow-lg hover:drop-shadow-xl hover:scale-105 transition-all duration-300">
+                        <img src="content/img/logo-school.png" alt="YDI" class="h-12 lg:h-14 w-auto drop-shadow-lg hover:drop-shadow-xl hover:scale-105 transition-all duration-300" loading="lazy" decoding="async">
                     </a>
 
                     <!-- Desktop Navigation -->
@@ -121,16 +141,10 @@ header("Referrer-Policy: strict-origin-when-cross-origin");
                             Home
                         </a>
 
-                        <?php
-                        $menu = new database();
-                        $menu->query("SELECT * FROM menus WHERE parent_id IS NULL ORDER BY menu_order ASC");
-                        if ($menu->rowCount() > 0) {
-                            while ($men = $menu->fetchObject()) {
-                                $menu_sub = new database();
-                                $menu_sub->query("SELECT * FROM menus WHERE parent_id = ? ORDER BY menu_order ASC", array($men->menu_id));
-
-                                if ($menu_sub->rowCount() > 0) {
-                        ?>
+                        <?php foreach ($mainMenus as $menuEntry) {
+    $men = $menuEntry['item'];
+    $children = $menuEntry['children'];
+    if (!empty($children)) { ?>
                                 <div class="relative group">
                                     <button class="flex items-center gap-1 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary-500 transition-colors">
                                         <?php echo htmlspecialchars(html_entity_decode($men->menu_label, ENT_QUOTES, 'UTF-8')); ?>
@@ -139,24 +153,19 @@ header("Referrer-Policy: strict-origin-when-cross-origin");
                                         </svg>
                                     </button>
                                     <div class="absolute top-full left-0 mt-1 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-                                        <?php while ($men_sub = $menu_sub->fetchObject()) { ?>
-                                            <a href="<?php echo htmlspecialchars($men_sub->menu_link); ?>" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-slate-700 hover:text-primary-500 transition-colors">
-                                                <?php echo htmlspecialchars(html_entity_decode($men_sub->menu_label, ENT_QUOTES, 'UTF-8')); ?>
+                                        <?php foreach ($children as $sub) { ?>
+                                            <a href="<?php echo htmlspecialchars($sub->menu_link); ?>" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-primary-50 dark:hover:bg-slate-700 hover:text-primary-500 transition-colors">
+                                                <?php echo htmlspecialchars(html_entity_decode($sub->menu_label, ENT_QUOTES, 'UTF-8')); ?>
                                             </a>
                                         <?php } ?>
                                     </div>
                                 </div>
-                        <?php
-                                } else {
-                        ?>
+                        <?php } else { ?>
                                 <a href="<?php echo htmlspecialchars($men->menu_link); ?>" class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary-500 transition-colors">
                                     <?php echo htmlspecialchars(html_entity_decode($men->menu_label, ENT_QUOTES, 'UTF-8')); ?>
                                 </a>
-                        <?php
-                                }
-                            }
-                        }
-                        ?>
+                        <?php }
+} ?>
 
                         <a href="https://www.portal.ydi.edu.pk/" class="ml-2 px-5 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white text-sm font-medium rounded-full hover:shadow-lg hover:shadow-primary-500/30 transition-all duration-300 hover:-translate-y-0.5">
                             Student Portal
@@ -188,15 +197,10 @@ header("Referrer-Policy: strict-origin-when-cross-origin");
                     <div class="flex flex-col space-y-1">
                         <a href="index.php" class="px-4 py-3 text-primary-500 font-medium rounded-lg hover:bg-primary-50 dark:hover:bg-slate-800">Home</a>
 
-                        <?php
-                        $menu_mobile = new database();
-                        $menu_mobile->query("SELECT * FROM menus WHERE parent_id IS NULL ORDER BY menu_order ASC");
-                        if ($menu_mobile->rowCount() > 0) {
-                            while ($men_m = $menu_mobile->fetchObject()) {
-                                $menu_sub_m = new database();
-                                $menu_sub_m->query("SELECT * FROM menus WHERE parent_id = ? ORDER BY menu_order ASC", array($men_m->menu_id));
-                                if ($menu_sub_m->rowCount() > 0) {
-                        ?>
+                        <?php foreach ($mainMenus as $menuEntry) {
+    $men_m = $menuEntry['item'];
+    $children_m = $menuEntry['children'];
+    if (!empty($children_m)) { ?>
                                 <div x-data="{ open: false }">
                                     <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-3 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800">
                                         <?php echo htmlspecialchars(html_entity_decode($men_m->menu_label, ENT_QUOTES, 'UTF-8')); ?>
@@ -205,24 +209,19 @@ header("Referrer-Policy: strict-origin-when-cross-origin");
                                         </svg>
                                     </button>
                                     <div x-show="open" x-cloak x-collapse class="pl-4 mt-1 space-y-1">
-                                        <?php while ($men_sub_m = $menu_sub_m->fetchObject()) { ?>
-                                            <a href="<?php echo htmlspecialchars($men_sub_m->menu_link); ?>" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary-500">
-                                                <?php echo htmlspecialchars(html_entity_decode($men_sub_m->menu_label, ENT_QUOTES, 'UTF-8')); ?>
+                                        <?php foreach ($children_m as $sub_m) { ?>
+                                            <a href="<?php echo htmlspecialchars($sub_m->menu_link); ?>" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary-500">
+                                                <?php echo htmlspecialchars(html_entity_decode($sub_m->menu_label, ENT_QUOTES, 'UTF-8')); ?>
                                             </a>
                                         <?php } ?>
                                     </div>
                                 </div>
-                        <?php
-                                } else {
-                        ?>
+                        <?php } else { ?>
                                 <a href="<?php echo htmlspecialchars($men_m->menu_link); ?>" class="px-4 py-3 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800">
                                     <?php echo htmlspecialchars(html_entity_decode($men_m->menu_label, ENT_QUOTES, 'UTF-8')); ?>
                                 </a>
-                        <?php
-                                }
-                            }
-                        }
-                        ?>
+                        <?php }
+} ?>
 
                         <div class="pt-4 mt-4 border-t border-slate-200 dark:border-slate-700">
                             <a href="https://www.portal.ydi.edu.pk/" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-medium rounded-lg">Student Portal</a>

@@ -1,24 +1,4 @@
 <?php
-function shapeSpace_block_proxy_visits() {
-    $headers = array('CLIENT_IP','FORWARDED','FORWARDED_FOR','FORWARDED_FOR_IP','VIA','X_FORWARDED','X_FORWARDED_FOR','HTTP_CLIENT_IP','HTTP_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED_FOR_IP','HTTP_PROXY_CONNECTION','HTTP_VIA','HTTP_X_FORWARDED','HTTP_X_FORWARDED_FOR');
-    foreach ($headers as $header){
-        if (isset($_SERVER[$header])) {
-            die('Proxy access not allowed.');
-        }
-    }
-}
-
-function shapeSpace_block_proxy_visits_port() {
-    $ports = array(80,81,553,554,1080,3128,4480,6588,8000,8080);
-    foreach ($ports as $port) {
-        if (@fsockopen($_SERVER['REMOTE_ADDR'], $port, $errno, $errstr, 5)) {
-            die('Proxy access not allowed.');
-        }
-    }
-}
-
-shapeSpace_block_proxy_visits();
-shapeSpace_block_proxy_visits_port();
 require '../config.php';
 require '../inc/loader.php';
 require __DIR__ . '/inc/admin_ui.php';

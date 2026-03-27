@@ -1,0 +1,19 @@
+# Admin Panel Protection
+
+# Block access to inc directory
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^inc/ - [F,L]
+</IfModule>
+
+# Extra security headers for admin
+<IfModule mod_headers.c>
+    Header set X-Frame-Options "DENY"
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+</IfModule>
+
+# Disable PHP execution in upload directories
+<IfModule mod_rewrite.c>
+    RewriteRule ^content/img/.*\.php$ - [F,L]
+</IfModule>

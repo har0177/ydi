@@ -14,14 +14,17 @@ if (isset($_GET["action"])) {
                 $title = cleanString($_POST["title"]);
                 $desg = cleanString($_POST["desg"]);
                 $order = cleanString($_POST["order"]);
-                $fileName = time() . '_' . basename($_FILES["image"]["name"]);
-                $path = "content/img/home/alumni/" . $fileName;
-                move_uploaded_file($_FILES["image"]["tmp_name"], "../" . $path);
-                try {
-                    $db->runQuery("INSERT INTO alumni (title, desg, image, alumni_order) VALUES (?,?,?,?)",
-                        [$title, $desg, $path, $order]);
-                    adminAlert('success', 'Alumni added successfully!');
-                } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                $upload = secureFileUpload($_FILES['image'], '../content/img/home/alumni');
+                if ($upload['success']) {
+                    $path = "content/img/home/alumni/" . $upload['filename'];
+                    try {
+                        $db->runQuery("INSERT INTO alumni (title, desg, image, alumni_order) VALUES (?,?,?,?)",
+                            [$title, $desg, $path, $order]);
+                        adminAlert('success', 'Alumni added successfully!');
+                    } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                } else {
+                    adminAlert('error', $upload['error']);
+                }
             } else {
                 adminAlert('error', 'Please select a photo.');
             }
@@ -55,14 +58,17 @@ if (isset($_GET["action"])) {
                 $order = cleanString($_POST["order"]);
 
                 if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
-                    $fileName = time() . '_' . basename($_FILES["image"]["name"]);
-                    $path = "content/img/home/alumni/" . $fileName;
-                    move_uploaded_file($_FILES["image"]["tmp_name"], "../" . $path);
-                    try {
-                        $db->runQuery("UPDATE alumni SET title=?, desg=?, image=?, alumni_order=? WHERE id=?",
-                            [$title, $desg, $path, $order, $id]);
-                        adminAlert('success', 'Alumni updated with new photo!');
-                    } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                    $upload = secureFileUpload($_FILES['image'], '../content/img/home/alumni');
+                    if ($upload['success']) {
+                        $path = "content/img/home/alumni/" . $upload['filename'];
+                        try {
+                            $db->runQuery("UPDATE alumni SET title=?, desg=?, image=?, alumni_order=? WHERE id=?",
+                                [$title, $desg, $path, $order, $id]);
+                            adminAlert('success', 'Alumni updated with new photo!');
+                        } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                    } else {
+                        adminAlert('error', $upload['error']);
+                    }
                 } else {
                     try {
                         $db->runQuery("UPDATE alumni SET title=?, desg=?, alumni_order=? WHERE id=?",

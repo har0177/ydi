@@ -14,18 +14,32 @@ if (isset($_GET["action"])) {
                 $order = cleanString($_POST["order"]);
                 $imageData = [];
 
+                $uploadError = false;
                 foreach ($_FILES['files']['tmp_name'] as $key => $tmp_name) {
-                    $fileName = time() . '_' . $key . '_' . basename($_FILES['files']['name'][$key]);
-                    $path = "content/images/" . $fileName;
-                    move_uploaded_file($tmp_name, "../" . $path);
-                    $imageData[] = $path;
+                    $singleFile = [
+                        'name'     => $_FILES['files']['name'][$key],
+                        'type'     => $_FILES['files']['type'][$key],
+                        'tmp_name' => $_FILES['files']['tmp_name'][$key],
+                        'error'    => $_FILES['files']['error'][$key],
+                        'size'     => $_FILES['files']['size'][$key]
+                    ];
+                    $upload = secureFileUpload($singleFile, '../content/images');
+                    if ($upload['success']) {
+                        $imageData[] = "content/images/" . $upload['filename'];
+                    } else {
+                        adminAlert('error', $upload['error']);
+                        $uploadError = true;
+                        break;
+                    }
                 }
 
+                if (!$uploadError) {
                 try {
                     $db->runQuery("INSERT INTO gallery (title, images, g_order) VALUES (?,?,?)",
                         [$title, implode("|", $imageData), $order]);
                     adminAlert('success', 'Gallery added successfully!');
                 } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                }
             } else {
                 adminAlert('error', 'Please select at least one image.');
             }
@@ -58,17 +72,31 @@ if (isset($_GET["action"])) {
 
             if (isset($_FILES['files']) && $_FILES['files']['tmp_name'][0] != '') {
                 $imageData = [];
+                $uploadError = false;
                 foreach ($_FILES['files']['tmp_name'] as $key => $tmp_name) {
-                    $fileName = time() . '_' . $key . '_' . basename($_FILES['files']['name'][$key]);
-                    $path = "content/images/" . $fileName;
-                    move_uploaded_file($tmp_name, "../" . $path);
-                    $imageData[] = $path;
+                    $singleFile = [
+                        'name'     => $_FILES['files']['name'][$key],
+                        'type'     => $_FILES['files']['type'][$key],
+                        'tmp_name' => $_FILES['files']['tmp_name'][$key],
+                        'error'    => $_FILES['files']['error'][$key],
+                        'size'     => $_FILES['files']['size'][$key]
+                    ];
+                    $upload = secureFileUpload($singleFile, '../content/images');
+                    if ($upload['success']) {
+                        $imageData[] = "content/images/" . $upload['filename'];
+                    } else {
+                        adminAlert('error', $upload['error']);
+                        $uploadError = true;
+                        break;
+                    }
                 }
+                if (!$uploadError) {
                 try {
                     $db->runQuery("UPDATE gallery SET title=?, images=?, g_order=? WHERE id=?",
                         [$title, implode("|", $imageData), $order, $id]);
                     adminAlert('success', 'Gallery updated with new images!');
                 } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                }
             } else {
                 try {
                     $db->runQuery("UPDATE gallery SET title=?, g_order=? WHERE id=?", [$title, $order, $id]);

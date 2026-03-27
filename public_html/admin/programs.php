@@ -13,14 +13,17 @@ if (isset($_GET["action"])) {
             elseif (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
                 $title = cleanString($_POST["title"]);
                 $body = $_POST["body"];
-                $fileName = time() . '_' . basename($_FILES["image"]["name"]);
-                $path = "content/images/" . $fileName;
-                move_uploaded_file($_FILES["image"]["tmp_name"], "../" . $path);
-                try {
-                    $db->runQuery("INSERT INTO programs (p_title, p_body, image) VALUES (?,?,?)",
-                        [$title, $body, $path]);
-                    adminAlert('success', 'Program added successfully!');
-                } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                $upload = secureFileUpload($_FILES['image'], '../content/images');
+                if ($upload['success']) {
+                    $path = "content/images/" . $upload['filename'];
+                    try {
+                        $db->runQuery("INSERT INTO programs (p_title, p_body, image) VALUES (?,?,?)",
+                            [$title, $body, $path]);
+                        adminAlert('success', 'Program added successfully!');
+                    } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                } else {
+                    adminAlert('error', $upload['error']);
+                }
             } else {
                 adminAlert('error', 'Please select an image for the program.');
             }
@@ -50,14 +53,17 @@ if (isset($_GET["action"])) {
                 $body = $_POST["body"];
 
                 if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
-                    $fileName = time() . '_' . basename($_FILES["image"]["name"]);
-                    $path = "content/images/" . $fileName;
-                    move_uploaded_file($_FILES["image"]["tmp_name"], "../" . $path);
-                    try {
-                        $db->runQuery("UPDATE programs SET p_title=?, p_body=?, image=? WHERE p_id=?",
-                            [$title, $body, $path, $id]);
-                        adminAlert('success', 'Program updated with new image!');
-                    } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                    $upload = secureFileUpload($_FILES['image'], '../content/images');
+                    if ($upload['success']) {
+                        $path = "content/images/" . $upload['filename'];
+                        try {
+                            $db->runQuery("UPDATE programs SET p_title=?, p_body=?, image=? WHERE p_id=?",
+                                [$title, $body, $path, $id]);
+                            adminAlert('success', 'Program updated with new image!');
+                        } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                    } else {
+                        adminAlert('error', $upload['error']);
+                    }
                 } else {
                     try {
                         $db->runQuery("UPDATE programs SET p_title=?, p_body=? WHERE p_id=?",

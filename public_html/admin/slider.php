@@ -16,17 +16,20 @@ if (isset($_GET["action"])) {
             $path = " ";
 
             if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
-                $fileName = $_FILES["image"]["name"];
-                $fileTmpLoc = $_FILES["image"]["tmp_name"];
-                $pathAndName = "../content/images/" . $fileName;
-                $path = "content/images/" . $fileName;
-                move_uploaded_file($fileTmpLoc, $pathAndName);
+                $upload = secureFileUpload($_FILES['image'], '../content/images');
+                if ($upload['success']) {
+                    $path = "content/images/" . $upload['filename'];
+                } else {
+                    adminAlert('error', $upload['error']);
+                }
             }
 
+            if ($path !== " " || !isset($_FILES['image']) || $_FILES['image']['size'] == 0) {
             try {
                 $db->runQuery("INSERT INTO slider VALUES (null,?,?,?,?,?)", [$path, $title1, $title2, $title3, $order]);
                 adminAlert('success', 'Slider added successfully!');
             } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+            }
         }
         ?>
         <form method="POST" action="<?php echo $page; ?>?action=add" enctype="multipart/form-data" class="space-y-4">
@@ -54,16 +57,17 @@ if (isset($_GET["action"])) {
             $order = cleanString($_POST["order"]);
 
             if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
-                $fileName = $_FILES["image"]["name"];
-                $fileTmpLoc = $_FILES["image"]["tmp_name"];
-                $pathAndName = "../content/images/" . $fileName;
-                $path = "content/images/" . $fileName;
-                move_uploaded_file($fileTmpLoc, $pathAndName);
-                try {
-                    $db->runQuery("UPDATE slider SET image=?, title1=?, title2=?, title3=?, s_order=? WHERE id=?",
-                        [$path, $title1, $title2, $title3, $order, $id]);
-                    adminAlert('success', 'Slider updated!');
-                } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                $upload = secureFileUpload($_FILES['image'], '../content/images');
+                if ($upload['success']) {
+                    $path = "content/images/" . $upload['filename'];
+                    try {
+                        $db->runQuery("UPDATE slider SET image=?, title1=?, title2=?, title3=?, s_order=? WHERE id=?",
+                            [$path, $title1, $title2, $title3, $order, $id]);
+                        adminAlert('success', 'Slider updated!');
+                    } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                } else {
+                    adminAlert('error', $upload['error']);
+                }
             } else {
                 try {
                     $db->runQuery("UPDATE slider SET title1=?, title2=?, title3=?, s_order=? WHERE id=?",

@@ -13,20 +13,17 @@ if (isset($_GET["action"])) {
             elseif (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
                 $title = cleanString($_POST["title"]);
                 $order = cleanString($_POST["order"]);
-                $fileName = time() . '_' . basename($_FILES["image"]["name"]);
-                $path = "content/img/clients/" . $fileName;
-
-                // Create directory if not exists
-                if (!is_dir("../content/img/clients")) {
-                    mkdir("../content/img/clients", 0755, true);
+                $upload = secureFileUpload($_FILES['image'], '../content/img/clients');
+                if ($upload['success']) {
+                    $path = "content/img/clients/" . $upload['filename'];
+                    try {
+                        $db->runQuery("INSERT INTO clients (title, image, c_order) VALUES (?,?,?)",
+                            [$title, $path, $order]);
+                        adminAlert('success', 'Client added successfully!');
+                    } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                } else {
+                    adminAlert('error', $upload['error']);
                 }
-
-                move_uploaded_file($_FILES["image"]["tmp_name"], "../" . $path);
-                try {
-                    $db->runQuery("INSERT INTO clients (title, image, c_order) VALUES (?,?,?)",
-                        [$title, $path, $order]);
-                    adminAlert('success', 'Client added successfully!');
-                } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
             } else {
                 adminAlert('error', 'Please upload a logo image!');
             }
@@ -56,19 +53,17 @@ if (isset($_GET["action"])) {
                 $order = cleanString($_POST["order"]);
 
                 if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
-                    $fileName = time() . '_' . basename($_FILES["image"]["name"]);
-                    $path = "content/img/clients/" . $fileName;
-
-                    if (!is_dir("../content/img/clients")) {
-                        mkdir("../content/img/clients", 0755, true);
+                    $upload = secureFileUpload($_FILES['image'], '../content/img/clients');
+                    if ($upload['success']) {
+                        $path = "content/img/clients/" . $upload['filename'];
+                        try {
+                            $db->runQuery("UPDATE clients SET title=?, image=?, c_order=? WHERE id=?",
+                                [$title, $path, $order, $id]);
+                            adminAlert('success', 'Client updated with new logo!');
+                        } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
+                    } else {
+                        adminAlert('error', $upload['error']);
                     }
-
-                    move_uploaded_file($_FILES["image"]["tmp_name"], "../" . $path);
-                    try {
-                        $db->runQuery("UPDATE clients SET title=?, image=?, c_order=? WHERE id=?",
-                            [$title, $path, $order, $id]);
-                        adminAlert('success', 'Client updated with new logo!');
-                    } catch (PDOException $e) { adminAlert('error', $e->getMessage()); }
                 } else {
                     try {
                         $db->runQuery("UPDATE clients SET title=?, c_order=? WHERE id=?",
