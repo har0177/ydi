@@ -1,0 +1,30 @@
+# Security: Prevent PHP execution in uploads directory
+# YDI Educational Platform
+
+# Disable PHP execution
+<FilesMatch "\.ph(p[3457]?|t|tml)$">
+    Require all denied
+</FilesMatch>
+
+# Also block other dangerous extensions
+<FilesMatch "\.(cgi|pl|py|sh|asp|aspx|exe|bat|cmd)$">
+    Require all denied
+</FilesMatch>
+
+# Disable script execution
+Options -ExecCGI
+AddHandler cgi-script .php .php3 .php4 .php5 .phtml .pl .py .cgi
+
+# Force download for certain file types (prevents execution)
+<FilesMatch "\.(php|phtml|php3|php4|php5|phps)$">
+    ForceType application/octet-stream
+    Header set Content-Disposition attachment
+</FilesMatch>
+
+# Disable directory indexing
+Options -Indexes
+
+# Block access to hidden files
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

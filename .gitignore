@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Environment files (contain credentials)
+.env
+.env.*
+!.env.example
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Claude / AI tools
+.claude/
+.qodo/
+.playwright-mcp/
+
+# Test artifacts
+test-results/
+
+# Zip archives
+*.zip
+
+# Screenshots (generated)
+*.png
+
+# Logs
+*.log
+npm-debug.log*
+
+# System backups
+*_backup_*

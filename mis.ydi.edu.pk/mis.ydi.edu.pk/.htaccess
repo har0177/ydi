@@ -1,0 +1,37 @@
+<IfModule mod_rewrite.c>
+     RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
+
+<Files 403.shtml>
+order allow,deny
+allow from all
+</Files>
+
+RewriteCond %{HTTP_REFERER} !^http://mis.ydi.edu.pk/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://mis.ydi.edu.pk$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://portal.ydi.edu.pk/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://portal.ydi.edu.pk$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.mis.ydi.edu.pk/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.mis.ydi.edu.pk$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.portal.ydi.edu.pk/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.portal.ydi.edu.pk$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.ydi.edu.pk/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.ydi.edu.pk$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://ydi.edu.pk/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://ydi.edu.pk$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://mis.ydi.edu.pk/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://mis.ydi.edu.pk$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://portal.ydi.edu.pk/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://portal.ydi.edu.pk$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.mis.ydi.edu.pk/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.mis.ydi.edu.pk$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.portal.ydi.edu.pk/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.portal.ydi.edu.pk$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.ydi.edu.pk/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://www.ydi.edu.pk$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://ydi.edu.pk/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^https://ydi.edu.pk$      [NC]
+RewriteRule .*\.(jpg|jpeg|gif|png|bmp)$ - [F,NC]

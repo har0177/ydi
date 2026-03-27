@@ -1,0 +1,44 @@
+/*** TABLES ***/
+
+.dataTable { margin-bottom: 0; }
+.dataTable th, .dataTable td { font-size: 12px; }
+.dataTables_wrapper { position: relative; padding-top: 50px; }
+.dataTables_length, .dataTables_info { background: #eee;  padding: 10px; font-size: 11px; border: 1px solid #ddd; }
+.dataTables_length { border-bottom: 0; display: none;}
+.dataTables_info { border-top: 0; }
+.dataTables_filter { position: absolute; top: 12px; right: 10px; }
+.dataTables_filter input { width: 200px; margin: 0 0 0 10px; font-size: 14px; height:35px; font-weight: normal;}
+.dataTables_paginate { position: absolute; bottom: 10px; right: 10px; }
+.dataTables_paginate .first, .dataTables_paginate .previous, .dataTables_paginate .paginate_active, 
+.dataTables_paginate .paginate_button, .dataTables_paginate .next, .dataTables_paginate .last { 
+	padding: 5px 10px; border: 1px solid #ccc; border-left: 0; font-size: 11px; background: #eee; cursor: pointer; }
+.dataTables_paginate span:hover { background-color: #ddd; }
+.dataTables_paginate .first { border-left: 1px solid #ccc; }
+.dataTables_paginate .paginate_active { background: #fff; }
+.dataTables_paginate .paginate_button:hover { background: #eee; }
+.dataTables_paginate .paginate_button_disabled { cursor: default; color: #ccc; background: #eee; }
+.dataTables_paginate a { color: #666; }
+.dataTables_paginate a:hover { text-decoration: none; }
+.dataTables_length select { width: auto !important; margin: 0; }
+.dataTables_scrollHead { background: #333; }
+.dataTables_scrollHead table { border-bottom: 0; }
+
+#dyntable2_wrapper .dataTables_filter {
+		  position: static; padding: 10px; background: #eee; text-align: right; border-left: 1px solid #ccc;
+		  border-right: 1px solid #ccc; }
+#dyntable2_info { border-top: 1px solid #ddd; }
+
+.pagination { margin: 10px 0; }
+.pagination > ul > li a { border-color: #ccc; }
+.pagination-large ul > li:first-child > a,
+.pagination-large ul > li:first-child > span,
+.pagination-large ul > li:last-child > a,
+.pagination-large ul > li:last-child > span { -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0; }
+.pagination ul > li > a, .pagination ul > li > span { color: #666; }
+
+.pager li > a { border-color: #ccc; }
+.pager li > a, .pager li > span {
+	color: #666; -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0; border-width: 2px; }
+
+.table .con0 { background: #fff; }
+.table .con1 { background: #f7f7f7; }
