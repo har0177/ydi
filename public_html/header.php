@@ -10,19 +10,26 @@ header("X-XSS-Protection: 1; mode=block");
 header("Referrer-Policy: strict-origin-when-cross-origin");
 ?>
 <?php
-// Fetch menu data ONCE for both desktop and mobile nav
+// Fetch ALL menu data in one query, group in PHP
 $menuDb = new database();
-$menuDb->query("SELECT * FROM menus WHERE parent_id IS NULL ORDER BY menu_order ASC");
-$mainMenus = [];
+$menuDb->query("SELECT * FROM menus ORDER BY menu_order ASC");
+$allMenus = [];
 while ($m = $menuDb->fetchObject()) {
-    $subDb = new database();
-    $subDb->query("SELECT * FROM menus WHERE parent_id = ? ORDER BY menu_order ASC", array($m->menu_id));
-    $subs = [];
-    while ($s = $subDb->fetchObject()) {
-        $subs[] = $s;
-    }
-    $mainMenus[] = ['item' => $m, 'children' => $subs];
+    $allMenus[] = $m;
 }
+$mainMenus = [];
+$childrenMap = [];
+foreach ($allMenus as $m) {
+    if ($m->parent_id === null || $m->parent_id == 0) {
+        $mainMenus[] = ['item' => $m, 'children' => []];
+    } else {
+        $childrenMap[$m->parent_id][] = $m;
+    }
+}
+foreach ($mainMenus as &$entry) {
+    $entry['children'] = $childrenMap[$entry['item']->menu_id] ?? [];
+}
+unset($entry);
 ?>
 <!DOCTYPE html>
 <html lang="en">

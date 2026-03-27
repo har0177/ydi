@@ -36,16 +36,20 @@
             'green' => ['bg' => 'bg-green-50', 'icon' => 'bg-green-100 text-green-500', 'text' => 'text-green-500'],
         ];
 
+        $db = new database();
+        try {
+            $db->query("SELECT
+                (SELECT COUNT(*) FROM programs) AS programs,
+                (SELECT COUNT(*) FROM gallery) AS gallery,
+                (SELECT COUNT(*) FROM videos) AS videos,
+                (SELECT COUNT(*) FROM team) AS team");
+            $counts = $db->fetchObject();
+        } catch (Exception $e) {
+            $counts = (object)['programs' => 0, 'gallery' => 0, 'videos' => 0, 'team' => 0];
+        }
+
         foreach ($stats as $stat) {
-            $count = 0;
-            try {
-                $db = new database();
-                $db->query("SELECT COUNT(*) as count FROM " . $stat['table']);
-                $result = $db->fetchObject();
-                $count = $result->count ?? 0;
-            } catch (Exception $e) {
-                $count = 0;
-            }
+            $count = $counts->{$stat['table']} ?? 0;
 
             $colors = $colorClasses[$stat['color']];
         ?>

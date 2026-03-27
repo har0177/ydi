@@ -94,23 +94,20 @@ public function lastInsertId(){
     }
     
 public function queryValue($stmt, $field = NULL, $args = NULL){
-    $ouput = FALSE;
+    $output = FALSE;
     $field = (is_array($field))? $field : array($field);
     try{
-        $db = new database();
-        $db->query($stmt, $args);
-        if($db->rowCount() > 0){
-            $r = $db->fetchObject();
+        $this->query($stmt, $args);
+        if($this->rowCount() > 0){
+            $r = $this->fetchObject();
             foreach ($field as $value) {
-                $ouput[$value] = $r->$value;
-                
+                $output[$value] = $r->$value;
             }
         }
-        
     }  catch (PDOException $e){
         throw $e;
     }
-    return (object) $ouput;
+    return (object) $output;
 }
 
 public function fetchObject(){

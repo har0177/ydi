@@ -2,10 +2,10 @@
 
 function list_courses($cur = 0) {
     $db = new database();
-    $db->query("SELECT * FROM courses");
+    $db->query("SELECT course_id, course_name FROM courses");
+    $course = '';
     while ($r = $db->fetchObject()) {
         $class = $cur == $r->course_id ? "selected=''" : "";
-
         $course .= "<option value='$r->course_id' $class> $r->course_name </option>";
     }
     return $course;
@@ -15,24 +15,24 @@ function list_courses($cur = 0) {
 
 function list_menu($cur = 0) {
     $db = new database();
-    $db->query("SELECT * FROM pages");
+    $db->query("SELECT page_id, page_title FROM pages");
+    $options = '';
     while ($r = $db->fetchObject()) {
         $class = $cur == "page.php?id=".$r->page_id ? "selected=''" : "";
-
-        $course .= "<option value='$r->page_id' $class> $r->page_title </option>";
+        $options .= "<option value='$r->page_id' $class> $r->page_title </option>";
     }
-    return $course;
+    return $options;
 }
 
 function list_submenu($cur = 0) {
     $db = new database();
-    $db->query("SELECT * FROM menus");
+    $db->query("SELECT menu_id, menu_label FROM menus");
+    $options = '';
     while ($r = $db->fetchObject()) {
         $class = $cur == $r->menu_id ? "selected=''" : "";
-
-        $course .= "<option value='$r->menu_id' $class> $r->menu_label </option>";
+        $options .= "<option value='$r->menu_id' $class> $r->menu_label </option>";
     }
-    return $course;
+    return $options;
 }
 
 function menu_name($id) {
@@ -62,24 +62,24 @@ function list_answer($cur = 0) {
 
 function list_topics($cur = 0) {
     $db = new database();
-    $db->query("SELECT * FROM topics where parent_id = 0");
+    $db->query("SELECT topic_id, topic_name FROM topics WHERE parent_id = 0");
+    $options = '';
     while ($r = $db->fetchObject()) {
         $class = $cur == $r->topic_id ? "selected=''" : "";
-
-        $unit .= "<option value='$r->topic_id' $class> $r->topic_name </option>";
+        $options .= "<option value='$r->topic_id' $class> $r->topic_name </option>";
     }
-    return $unit;
+    return $options;
 }
 
 function topics($cur = 0) {
     $db = new database();
-    $db->query("SELECT * FROM topics");
+    $db->query("SELECT topic_id, topic_name FROM topics");
+    $options = '';
     while ($r = $db->fetchObject()) {
         $class = $cur == $r->topic_id ? "selected=''" : "";
-
-        $unit .= "<option value='$r->topic_id' $class> $r->topic_name </option>";
+        $options .= "<option value='$r->topic_id' $class> $r->topic_name </option>";
     }
-    return $unit;
+    return $options;
 }
 
 function topic_name($id) {

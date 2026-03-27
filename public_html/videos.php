@@ -1,11 +1,9 @@
 <?php require 'header.php'; ?>
 
 <?php
-$db = new database();
-
 if (isset($_GET["id"]) && !empty($_GET["id"])) {
     $id = intval($_GET["id"]);
-
+    $db = new database();
     try {
         $db->query("SELECT * FROM videos WHERE id = ?", array($id));
 

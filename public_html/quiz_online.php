@@ -2,7 +2,7 @@
 require 'header.php';
 require_once 'inc/csrf.php';
 $db = new database();
-$user = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+$user = $_SERVER['REMOTE_ADDR'];
 
 if (isset($_GET['result']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($user)) {

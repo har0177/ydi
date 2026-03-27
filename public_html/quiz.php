@@ -9,6 +9,14 @@ if ($db->rowCount() > 0) {
     while ($topic = $db->fetchObject()) {
         $topics[] = $topic;
     }
+
+    // Pre-fetch all subtopics in one query
+    $subDb = new database();
+    $subDb->query("SELECT * FROM topics WHERE parent_id != 0 ORDER BY topic_id ASC");
+    $subtopicsByParent = [];
+    while ($st = $subDb->fetchObject()) {
+        $subtopicsByParent[$st->parent_id][] = $st;
+    }
 ?>
 
 <!-- Page Title Section -->
@@ -47,9 +55,8 @@ if ($db->rowCount() > 0) {
                 $color = $colors[$index % count($colors)];
 
                 // Check for subtopics
-                $db1 = new database();
-                $db1->query("SELECT * FROM topics WHERE parent_id = ? ORDER BY topic_id ASC", array($topic->topic_id));
-                $hasSubtopics = $db1->rowCount() > 0;
+                $topicChildren = $subtopicsByParent[$topic->topic_id] ?? [];
+                $hasSubtopics = !empty($topicChildren);
             ?>
             <div class="bg-slate-50 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
                 <!-- Topic Header -->
@@ -68,7 +75,7 @@ if ($db->rowCount() > 0) {
                 <div class="p-4">
                     <?php if ($hasSubtopics) { ?>
                     <ul class="space-y-2">
-                        <?php while ($sub_topic = $db1->fetchObject()) { ?>
+                        <?php foreach ($topicChildren as $sub_topic) { ?>
                         <li>
                             <a href="quiz_online.php?id=<?php echo (int)$sub_topic->topic_id; ?>"
                                class="flex items-center gap-2 px-4 py-3 bg-white dark:bg-slate-700 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-<?php echo $color; ?>-50 dark:hover:bg-<?php echo $color; ?>-900/20 hover:text-<?php echo $color; ?>-600 transition-all group">
