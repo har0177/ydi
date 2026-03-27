@@ -14,7 +14,7 @@ if (isset($_GET["action"])) {
                 $title = cleanString($_POST["title"]);
                 $desg = cleanString($_POST["desg"]);
                 $order = cleanString($_POST["order"]);
-                $upload = secureFileUpload($_FILES['image'], '../content/img/home/alumni');
+                $upload = secureFileUpload($_FILES['image'], dirname(__DIR__) . '/content/img/home/alumni');
                 if ($upload['success']) {
                     $path = "content/img/home/alumni/" . $upload['filename'];
                     try {
@@ -58,7 +58,7 @@ if (isset($_GET["action"])) {
                 $order = cleanString($_POST["order"]);
 
                 if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
-                    $upload = secureFileUpload($_FILES['image'], '../content/img/home/alumni');
+                    $upload = secureFileUpload($_FILES['image'], dirname(__DIR__) . '/content/img/home/alumni');
                     if ($upload['success']) {
                         $path = "content/img/home/alumni/" . $upload['filename'];
                         try {

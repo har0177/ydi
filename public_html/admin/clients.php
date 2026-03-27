@@ -13,7 +13,7 @@ if (isset($_GET["action"])) {
             elseif (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
                 $title = cleanString($_POST["title"]);
                 $order = cleanString($_POST["order"]);
-                $upload = secureFileUpload($_FILES['image'], '../content/img/clients');
+                $upload = secureFileUpload($_FILES['image'], dirname(__DIR__) . '/content/img/clients');
                 if ($upload['success']) {
                     $path = "content/img/clients/" . $upload['filename'];
                     try {
@@ -53,7 +53,7 @@ if (isset($_GET["action"])) {
                 $order = cleanString($_POST["order"]);
 
                 if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
-                    $upload = secureFileUpload($_FILES['image'], '../content/img/clients');
+                    $upload = secureFileUpload($_FILES['image'], dirname(__DIR__) . '/content/img/clients');
                     if ($upload['success']) {
                         $path = "content/img/clients/" . $upload['filename'];
                         try {

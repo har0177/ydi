@@ -95,7 +95,16 @@ function secureFileUpload($file, $uploadPath, $allowedTypes = null, $allowedExte
 
     // Ensure upload directory exists
     if (!is_dir($uploadPath)) {
-        mkdir($uploadPath, 0755, true);
+        if (!@mkdir($uploadPath, 0755, true)) {
+            $result['error'] = 'Upload directory could not be created. Please create it manually and set permissions to 0755.';
+            return $result;
+        }
+    }
+
+    // Check directory is writable
+    if (!is_writable($uploadPath)) {
+        $result['error'] = 'Upload directory is not writable. Please set permissions to 0755 on: ' . basename($uploadPath);
+        return $result;
     }
 
     // Move uploaded file
@@ -105,7 +114,7 @@ function secureFileUpload($file, $uploadPath, $allowedTypes = null, $allowedExte
         $result['filename'] = $newFilename;
         $result['path'] = $destination;
     } else {
-        $result['error'] = 'Failed to move uploaded file';
+        $result['error'] = 'Failed to move uploaded file. Check directory permissions (need 0755).';
     }
 
     return $result;

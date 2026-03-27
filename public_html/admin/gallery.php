@@ -23,7 +23,7 @@ if (isset($_GET["action"])) {
                         'error'    => $_FILES['files']['error'][$key],
                         'size'     => $_FILES['files']['size'][$key]
                     ];
-                    $upload = secureFileUpload($singleFile, '../content/images');
+                    $upload = secureFileUpload($singleFile, dirname(__DIR__) . '/content/images');
                     if ($upload['success']) {
                         $imageData[] = "content/images/" . $upload['filename'];
                     } else {
@@ -81,7 +81,7 @@ if (isset($_GET["action"])) {
                         'error'    => $_FILES['files']['error'][$key],
                         'size'     => $_FILES['files']['size'][$key]
                     ];
-                    $upload = secureFileUpload($singleFile, '../content/images');
+                    $upload = secureFileUpload($singleFile, dirname(__DIR__) . '/content/images');
                     if ($upload['success']) {
                         $imageData[] = "content/images/" . $upload['filename'];
                     } else {
