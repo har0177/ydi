@@ -166,36 +166,84 @@ if (count($galleryItems) > 0) {
 <?php } ?>
 
 <?php
-$videosList = fetchAll('videos', 'v_order ASC', 8, 'status = 1');
+$videosList = fetchAll('videos', 'v_order ASC', null, 'status = 1');
 if (count($videosList) > 0) {
+$videosPerPage = 8;
+$totalVideos = count($videosList);
+$totalPages = ceil($totalVideos / $videosPerPage);
 ?>
 <!-- Videos Section -->
 <section class="py-20 bg-slate-50 dark:bg-slate-800" id="ourVideos">
     <div class="container mx-auto px-4 lg:px-8">
-        <?php sectionHeader('Watch & Learn', 'red', 'Our', 'Videos', 'Educational content and highlights from our programs.'); ?>
+        <div class="flex items-end justify-between mb-12">
+            <div class="flex-1">
+                <?php sectionHeader('Watch & Learn', 'red', 'Our', 'Videos', 'Educational content and highlights from our programs.'); ?>
+            </div>
+            <?php if ($totalPages > 1) { ?>
+            <div class="flex items-center gap-3 mb-1" x-data>
+                <button @click="$dispatch('videos-prev')" class="w-12 h-12 rounded-full border-2 border-slate-300 dark:border-slate-600 hover:border-red-500 hover:bg-red-500 hover:text-white text-slate-500 dark:text-slate-400 flex items-center justify-center transition-all duration-300">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <button @click="$dispatch('videos-next')" class="w-12 h-12 rounded-full border-2 border-slate-300 dark:border-slate-600 hover:border-red-500 hover:bg-red-500 hover:text-white text-slate-500 dark:text-slate-400 flex items-center justify-center transition-all duration-300">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+            <?php } ?>
+        </div>
 
-        <!-- Videos Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <?php foreach ($videosList as $vid) { ?>
-            <div class="group relative bg-white dark:bg-slate-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
-                <div class="relative aspect-video">
-                    <img src="https://img.youtube.com/vi/<?php echo htmlspecialchars($vid->link); ?>/hqdefault.jpg" alt="Video thumbnail" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent flex items-center justify-center">
-                        <a href="https://www.youtube.com/watch?v=<?php echo htmlspecialchars($vid->link); ?>" data-fancybox="videos" class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-lg">
-                            <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </a>
+        <!-- Videos Slider -->
+        <div x-data="{
+            currentPage: 0,
+            totalPages: <?php echo $totalPages; ?>,
+            next() { this.currentPage = (this.currentPage + 1) % this.totalPages },
+            prev() { this.currentPage = (this.currentPage - 1 + this.totalPages) % this.totalPages }
+        }"
+        @videos-next.window="next()"
+        @videos-prev.window="prev()"
+        class="relative overflow-hidden">
+            <div class="flex transition-transform duration-500 ease-in-out" :style="'transform: translateX(-' + (currentPage * 100) + '%)'">
+                <?php for ($page = 0; $page < $totalPages; $page++) { ?>
+                <div class="w-full flex-shrink-0">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <?php
+                        $pageVideos = array_slice($videosList, $page * $videosPerPage, $videosPerPage);
+                        foreach ($pageVideos as $vid) { ?>
+                        <div class="group relative bg-white dark:bg-slate-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 card-hover">
+                            <div class="relative aspect-video">
+                                <img src="https://img.youtube.com/vi/<?php echo htmlspecialchars($vid->link); ?>/hqdefault.jpg" alt="Video thumbnail" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent flex items-center justify-center">
+                                    <a href="https://www.youtube.com/watch?v=<?php echo htmlspecialchars($vid->link); ?>" data-fancybox="videos" class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center transform group-hover:scale-110 transition-transform shadow-lg">
+                                        <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-center gap-2 text-red-500 text-sm font-medium">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                                    </svg>
+                                    YouTube
+                                </div>
+                            </div>
+                        </div>
+                        <?php } ?>
                     </div>
                 </div>
-                <div class="p-4">
-                    <div class="flex items-center gap-2 text-red-500 text-sm font-medium">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
-                        </svg>
-                        YouTube
-                    </div>
-                </div>
+                <?php } ?>
+            </div>
+
+            <?php if ($totalPages > 1) { ?>
+            <!-- Page Dots -->
+            <div class="flex justify-center gap-2 mt-8">
+                <?php for ($i = 0; $i < $totalPages; $i++) { ?>
+                <button @click="currentPage = <?php echo $i; ?>" :class="currentPage === <?php echo $i; ?> ? 'w-8 bg-red-500' : 'w-3 bg-slate-300 dark:bg-slate-600 hover:bg-red-300'" class="h-3 rounded-full transition-all duration-300"></button>
+                <?php } ?>
             </div>
             <?php } ?>
         </div>
@@ -309,6 +357,48 @@ if (count($teamList) > 0) {
         <div class="text-center mt-12">
             <a href="team.php" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 View All Team Members
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+<?php } ?>
+
+<?php
+$alumniList = fetchAll('alumni', 'alumni_order ASC', 5);
+if (count($alumniList) > 0) {
+?>
+<!-- Alumni Section -->
+<section class="py-20 bg-white dark:bg-slate-900" id="ourAlumni">
+    <div class="container mx-auto px-4 lg:px-8">
+        <?php sectionHeader('Our Pride', 'green', 'Our', 'Alumni', 'Successful graduates making a difference in the world.'); ?>
+
+        <!-- Alumni Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8">
+            <?php foreach ($alumniList as $alum) { ?>
+            <div class="group text-center">
+                <div class="relative mb-4 mx-auto w-32 h-32 lg:w-40 lg:h-40">
+                    <div class="absolute inset-0 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 p-1 transform group-hover:scale-105 transition-transform duration-300">
+                        <div class="w-full h-full rounded-full overflow-hidden bg-white dark:bg-slate-800">
+                            <img src="<?php echo htmlspecialchars($alum->image); ?>" alt="<?php echo safeHtml($alum->title); ?>" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+                <h4 class="font-bold text-slate-800 dark:text-white group-hover:text-green-500 transition-colors">
+                    <?php echo safeHtml($alum->title); ?>
+                </h4>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                    <?php echo safeHtml($alum->desg); ?>
+                </p>
+            </div>
+            <?php } ?>
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="alumni-all.php" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                View All Alumni
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
