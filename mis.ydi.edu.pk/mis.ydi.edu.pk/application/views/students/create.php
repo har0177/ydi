@@ -363,26 +363,83 @@
 
 </div><!-- /.col -->
 
-<!-- Configure a few settings and attach camera -->
-<script language="JavaScript">
-   Webcam.set({
-        width: 180,
-        height: 180,
-        image_format: 'jpeg',
-        jpeg_quality: 100
-    });
-  
-    Webcam.attach( '#my_camera' );
-  
-    function take_snapshot() {
-        Webcam.snap( function(data_uri) {
-           var cleanedString = data_uri.substring(data_uri.indexOf(",") + 1);
+<!-- Camera capture - inline, no external dependency -->
+<script>
+(function() {
+    var cameraDiv = document.getElementById('my_camera');
+    var videoStream = null;
+    var videoElem = null;
+    var CAM_WIDTH = 180;
+    var CAM_HEIGHT = 180;
 
-            $(".image-tag").val(cleanedString);
-            document.getElementById('results').innerHTML = '<img src="'+data_uri+'"/>';
-           
-        } );
+    function showError(msg) {
+        cameraDiv.innerHTML = '<div style="padding:10px;color:red;font-size:12px;">'
+            + '<b>Camera Error:</b> ' + msg + '</div>';
     }
+
+    function startCamera() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            showError('Camera not supported. Use HTTPS and a modern browser.');
+            return;
+        }
+
+        cameraDiv.innerHTML = '<div style="padding:20px;text-align:center;color:#666;">Starting camera...</div>';
+
+        navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "user" } })
+        .then(function(stream) {
+            videoStream = stream;
+            cameraDiv.innerHTML = '';
+
+            videoElem = document.createElement('video');
+            videoElem.setAttribute('autoplay', '');
+            videoElem.setAttribute('playsinline', '');
+            videoElem.setAttribute('muted', '');
+            videoElem.muted = true;
+            videoElem.style.width = CAM_WIDTH + 'px';
+            videoElem.style.height = CAM_HEIGHT + 'px';
+            videoElem.style.objectFit = 'cover';
+            videoElem.srcObject = stream;
+            cameraDiv.appendChild(videoElem);
+
+            videoElem.play().catch(function() {
+                videoElem.muted = true;
+                videoElem.play();
+            });
+        })
+        .catch(function(err) {
+            showError(err.name + ': ' + err.message);
+        });
+    }
+
+    // show tap-to-start button (user gesture needed for camera permission on mobile)
+    cameraDiv.innerHTML = '<div style="width:' + CAM_WIDTH + 'px;height:' + CAM_HEIGHT + 'px;'
+        + 'display:flex;align-items:center;justify-content:center;cursor:pointer;'
+        + 'background:#f5f5f5;border:2px dashed #aaa;border-radius:8px;text-align:center;">'
+        + '<div><div style="font-size:28px;">&#128247;</div><b style="font-size:13px;">Tap to start camera</b></div></div>';
+
+    cameraDiv.querySelector('div').addEventListener('click', function() {
+        startCamera();
+    });
+
+    // take_snapshot - captures frame from video to base64
+    window.take_snapshot = function() {
+        if (!videoElem) {
+            showError('Camera is not started yet. Tap to start camera first.');
+            return;
+        }
+        var canvas = document.createElement('canvas');
+        canvas.width = CAM_WIDTH;
+        canvas.height = CAM_HEIGHT;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(videoElem, 0, 0, CAM_WIDTH, CAM_HEIGHT);
+
+        var data_uri = canvas.toDataURL('image/jpeg', 1.0);
+        var cleanedString = data_uri.substring(data_uri.indexOf(",") + 1);
+
+        $(".image-tag").val(cleanedString);
+        document.getElementById('results').innerHTML = '<img src="' + data_uri + '"/>';
+    };
+})();
      function checkRadio(name) {
     if(name == "Yes"){
         document.getElementById("datetime").disabled = false;

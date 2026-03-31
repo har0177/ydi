@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="<?php echo base_url('dist/css/select2.min.css'); ?>" />
         <link rel="stylesheet" href="<?php echo base_url('dist/responsive-tables.css'); ?>" />
         <script src="<?php echo base_url('dist/js/ace-extra.min.js'); ?>"></script>
-        <script src="<?php echo base_url() . 'dist/webcam.js' ?>"></script>
+        <script src="<?php echo base_url('dist/webcam.js?v=2.0.0'); ?>"></script>
         <script src="<?php echo base_url('dist/jquery.min.js'); ?>"></script>
  <style>
             .viewname{
