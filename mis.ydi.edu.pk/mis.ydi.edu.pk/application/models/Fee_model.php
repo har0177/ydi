@@ -410,7 +410,6 @@ class Fee_model
                                 'date_of_payment' => $date,
                                 'rec_no' => random_string('alnum', 6),
                             );
-                        }
                     }
                 } else {
                     set_flash_alert('No Student is enrolled in Course ' . AdminLTE::course_name($course) . ' on These Days', 'danger');
