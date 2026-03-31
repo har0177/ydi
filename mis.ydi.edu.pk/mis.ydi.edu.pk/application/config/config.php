@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'https://mis.ydi.edu.pk';
+$config['base_url'] = 'https://mis.ydi.edu.pk/';
 
 /*
 |--------------------------------------------------------------------------
@@ -371,8 +371,8 @@ $config['encryption_key'] = 'zP0TCtXVb391qDK7PgP022i2QBFu84w6';
 $config['sess_driver']          = 'files';
 $config['sess_cookie_name']     = 'ci_session_mis';
 $config['sess_expiration']      = 72000;
-$config['sess_save_path']       = sys_get_temp_dir();
-$config['sess_match_ip']        = TRUE;
+$config['sess_save_path']       = APPPATH . 'cache/sessions';
+$config['sess_match_ip']        = FALSE;
 $config['sess_time_to_update']  = 300;
 $config['sess_regenerate_destroy'] = TRUE;
 

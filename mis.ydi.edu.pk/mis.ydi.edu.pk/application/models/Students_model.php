@@ -119,7 +119,7 @@ class Students_model
       return false;
     }
 
-    $regnoo = $this->input->post('regno', true);
+    $regnoo = $this->input->post('regno', true) ?? '';
     $regno = preg_replace('/[\W\s\/]+/', '-', $regnoo);
     $name = $this->input->post('name', true);
     $fname = $this->input->post('fname', true);
@@ -148,7 +148,8 @@ class Students_model
       $empl = $this->input->post('employee', true);
     }
     if ($sendSms == "Yes") {
-      $dateTime = strtotime($this->input->post('datetime', true));
+      $datetimeInput = $this->input->post('datetime', true) ?? '';
+      $dateTime = !empty($datetimeInput) ? strtotime($datetimeInput) : time();
       $message = "Dear " . $name . "!
              You are successfully registered in YDI " . $type . ". Kindly visit YDI on " . date('d-M-Y h:i:s A',
           $dateTime) . " for initial Evaluation interview.

@@ -57,7 +57,7 @@
 
                             <tr>
                                 <td><?php echo $i; ?></td>
-                                <td><?php echo ucwords(strtolower($r->name)); ?></td>
+                                <td><?php echo ucwords(strtolower($r->name ?? '')); ?></td>
                                 <td><?php echo $id; ?></td>
 
                                 <?php

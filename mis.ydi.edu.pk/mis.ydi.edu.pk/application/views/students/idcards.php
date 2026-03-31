@@ -153,7 +153,7 @@
 <div>
     <img src="<?php echo base_url('images/idcard.jpg'); ?>" class="idcard" />
    
-                <p class="name"><?php echo ucwords($r->name)  ?></p>
+                <p class="name"><?php echo ucwords($r->name ?? '')  ?></p>
                 <p class="session">Session : <?php echo dateformates($r->do_admission)  ?></p>
 
                 <p class="adm"><?php echo strtoupper(AdminLTE::student_course($r->course)) ?></p>

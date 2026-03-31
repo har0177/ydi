@@ -151,8 +151,8 @@
                         <td><?php echo AdminLTE::student_course( $r->course ) ?></td>
                         <td><?php echo $r->reg_no ?></td>
                         <td><?php echo date( "d-m-Y", strtotime( $r->do_admission ) ) ?></td>
-                        <td><?php echo ucwords( strtolower( $r->name ) ); ?></td>
-                        <td><?php echo ucwords( strtolower( $r->f_name ) ); ?></td>
+                        <td><?php echo ucwords( strtolower( $r->name ?? '' ) ); ?></td>
+                        <td><?php echo ucwords( strtolower( $r->f_name ?? '' ) ); ?></td>
                         <td><?php echo $r->contact ?></td>
                         <td><?php
                           if( $r->status

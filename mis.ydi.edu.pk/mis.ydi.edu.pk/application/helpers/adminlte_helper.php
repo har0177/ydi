@@ -253,9 +253,9 @@ public static function rank_date($id, $course, $date) {
 
         if ($query->num_rows() > 0) {
             $result = $query->result_array();
-            return $result[0][$check];
+            return $result[0][$check] ?? '';
         } else {
-            return FALSE;
+            return '';
         }
     }
     public static function naway_data($id, $check) {
@@ -267,9 +267,9 @@ public static function rank_date($id, $course, $date) {
 
         if ($query->num_rows() > 0) {
             $result = $query->result_array();
-            return $result[0][$check];
+            return $result[0][$check] ?? '';
         } else {
-            return FALSE;
+            return '';
         }
     }
 
@@ -296,9 +296,9 @@ public static function rank_date($id, $course, $date) {
 
         if ($query->num_rows() == 1) {
             $result = $query->result_array();
-            return $result[0]['name'];
+            return $result[0]['name'] ?? '';
         } else {
-            return FALSE;
+            return '';
         }
     }
 
@@ -407,9 +407,9 @@ public static function rank_date($id, $course, $date) {
 
         if ($query->num_rows() == 1) {
             $result = $query->result_array();
-            return $result[0]['img'];
+            return $result[0]['img'] ?? '';
         } else {
-            return FALSE;
+            return '';
         }
     }
 
@@ -422,9 +422,9 @@ public static function rank_date($id, $course, $date) {
 
         if ($query->num_rows() == 1) {
             $result = $query->result_array();
-            return $result[0]['name'];
+            return $result[0]['name'] ?? '';
         } else {
-            return FALSE;
+            return '';
         }
     }
 
@@ -437,9 +437,9 @@ public static function rank_date($id, $course, $date) {
 
         if ($query->num_rows() == 1) {
             $result = $query->result_array();
-            return $result[0]['f_name'];
+            return $result[0]['f_name'] ?? '';
         } else {
-            return FALSE;
+            return '';
         }
     }
     
@@ -610,6 +610,7 @@ public static function rank_date($id, $course, $date) {
     public static function courses($cur = "") {
         $CI = & get_instance();
         $query = $CI->db->get('courses');
+        $data = "";
         foreach ($query->result() as
                 $r) {
             $c = $cur == $r->course_id ? "selected = ''" : "";
@@ -634,6 +635,7 @@ public static function rank_date($id, $course, $date) {
     public static function expense_names($cur = "") {
         $CI = & get_instance();
         $query = $CI->db->get('expense_names');
+        $data = "";
         foreach ($query->result() as
                 $r) {
             $c = $cur == $r->id ? "selected = ''" : "";
@@ -645,6 +647,7 @@ public static function rank_date($id, $course, $date) {
     public static function batch($cur = "") {
         $CI = & get_instance();
         $query = $CI->db->get('batch');
+        $data = "";
         foreach ($query->result() as
                 $r) {
             $c = $cur == $r->batch_id ? "selected = ''" : "";
@@ -658,18 +661,20 @@ public static function rank_date($id, $course, $date) {
         $array = array('status' => 1);
         $CI->db->where($array);
         $query = $CI->db->get('student');
+        $data = "";
         foreach ($query->result() as
                 $r) {
             $data .= "<option value = '$r->reg_no'> $r->reg_no </option>";
         }
         return $data;
     }
-    
+
     public static function naway_std() {
         $CI = & get_instance();
         $array = array('status' => 1);
         $CI->db->where($array);
         $query = $CI->db->get('naway');
+        $data = "";
         foreach ($query->result() as
                 $r) {
             $data .= "<option value = '$r->regno'> $r->regno </option>";

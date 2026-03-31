@@ -328,10 +328,6 @@ class Fee_model
                         $date = $this->input->post('submission', TRUE);
                         $total = $others + $monthly + $other;
 
-                        for ($i = 0;
-                                $i < count($id);
-                                $i++) {
-
                             $qq = $this->db->query("Select * from fee where reg_no = '" . $id . "' and month = $month and year =" . date('Y') . "");
 
 
@@ -358,7 +354,6 @@ class Fee_model
                                 'date_of_payment' => $date,
                                 'rec_no' => random_string('alnum', 6),
                             );
-                        }
                     }
                 } else {
                     set_flash_alert('No Student is enrolled on These Days', 'danger');
@@ -391,10 +386,6 @@ class Fee_model
                         $other = AdminLTE::student_fee_dues($id);
                         $date = $this->input->post('submission', TRUE);
                         $total = $others + $monthly + $other;
-
-                        for ($i = 0;
-                                $i < count($id);
-                                $i++) {
 
                             $qq = $this->db->query("Select * from fee where reg_no = '" . $id . "' and month = $month and year =" . date('Y') . " and course = $course");
 
@@ -577,7 +568,7 @@ class Fee_model
 
         $total = $result[0]['total'];
         $regno = $result[0]['reg_no'];
-        if ($result[0]['status_1p'] == 0 && $result[0]['status_1p'] != NULL) {
+        if ($result[0]['status_1p'] === 0 || $result[0]['status_1p'] === '0') {
             $sql = $this->db->update(
                     'fee', [
                 'status' => 1,

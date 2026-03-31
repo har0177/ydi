@@ -1,5 +1,10 @@
 <IfModule mod_rewrite.c>
      RewriteEngine On
+
+# Redirect www to non-www
+RewriteCond %{HTTP_HOST} ^www\.mis\.ydi\.edu\.pk$ [NC]
+RewriteRule ^(.*)$ https://mis.ydi.edu.pk/$1 [R=301,L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/$1 [L]

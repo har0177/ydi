@@ -26,9 +26,9 @@
                 </tr>
                 <tr>
                     <th>Name</th>
-                    <td><?php echo ucwords($r->name); ?></td>
+                    <td><?php echo ucwords($r->name ?? ''); ?></td>
                     <th>Batch Name</th>
-                    <td><?php echo ucwords($r->batch); ?></td>
+                    <td><?php echo ucwords($r->batch ?? ''); ?></td>
              
                     <th>Date</th>
                     <td><?php echo $r->date; ?></td>

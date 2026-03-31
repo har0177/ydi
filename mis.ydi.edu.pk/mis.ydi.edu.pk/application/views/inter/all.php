@@ -100,7 +100,7 @@
                             <td><?php echo AdminLTE::student_course($r->course) ?></td>
                             <td><?php echo ucwords(strtolower(AdminLTE::student_name($r->regno))); ?></td>
                             <td><?php echo ucwords(strtolower(AdminLTE::student_fname($r->regno))); ?></td>
-                          <td><?php echo ucwords($int_date->inter_name); ?></td>
+                          <td><?php echo ucwords($int_date->inter_name ?? ''); ?></td>
                             <td><?php echo dateformatesformysql_fata(AdminLTE::student_data($r->regno, 'do_admission')); ?></td>
                             <td>
                             <?php

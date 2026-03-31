@@ -121,18 +121,15 @@ class Sms_model
 
             foreach ($sender as
                     $value) {
-                for ($i = 0;
-                        $i < count($value);
-                        $i++) {
-
-                    AdminLTE::sms($value, $message);
-                    $this->db->insert('logs', [
-                        'contact' => $value,
-                        'msg' => $message,
-                        'date' => date("Y-m-d H:i:s"),
-                        'from_user' => $this->session->user_id,
-                    ]);
-                }
+                    if (!empty($value)) {
+                        AdminLTE::sms($value, $message);
+                        $this->db->insert('logs', [
+                            'contact' => $value,
+                            'msg' => $message,
+                            'date' => date("Y-m-d H:i:s"),
+                            'from_user' => $this->session->user_id,
+                        ]);
+                    }
             }
         }
         return FALSE;
@@ -258,12 +255,9 @@ AdminLTE::sms_bulk($sender, $message);
                     $row) {
                 $id = $row['reg_no'];
                 $value = $row['contact'];
-                if ($value == 0 || $value == "") {
+                if (empty($value) || $value == 0) {
                     continue;
                 }
-                for ($i = 0;
-                        $i < count($value);
-                        $i++) {
 
                     AdminLTE::sms($value, $message);
                     $this->db->insert('logs', [
@@ -272,7 +266,6 @@ AdminLTE::sms_bulk($sender, $message);
                         'date' => date("Y-m-d H:i:s"),
                         'from_user' => $this->session->user_id,
                     ]);
-                }
             }
         }
         return FALSE;

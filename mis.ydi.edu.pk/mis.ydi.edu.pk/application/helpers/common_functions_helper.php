@@ -39,12 +39,12 @@ if (!function_exists('verify_password')) {
         }
 
         // Legacy crypt() with 'ca' salt (2 character salt)
-        if (strlen($hash) == 13) {
+        if (strlen($hash ?? '') == 13) {
             return crypt($password, 'ca') === $hash;
         }
 
         // Legacy MD5 (32 hex characters)
-        if (strlen($hash) === 32 && ctype_xdigit($hash)) {
+        if (strlen($hash ?? '') === 32 && ctype_xdigit($hash)) {
             return md5($password) === $hash;
         }
 
@@ -465,7 +465,7 @@ function upload_file($FILES,$file_element_name,$upload_path){
 	$file_type=$FILES[$file_element_name]['type'];
 	$tmp = explode('.', $file_name);
 	$ext = end($tmp);
-	$file_ext=strtolower($ext);
+	$file_ext=strtolower($ext ?? '');
 	if(in_array($file_ext,$expensions)=== false){
 		$errors[]="extension not allowed, please choose a JPEG or PNG file.";
 	}

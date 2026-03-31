@@ -35,8 +35,8 @@
  <td> <?php echo $i ?></td>
                             <td><?php echo AdminLTE::student_course($r->course) ?></td>
                             <td><?php echo $r->reg_no ?></td>
-                            <td><?php echo ucwords(strtolower($r->name)); ?></td>
-                            <td><?php echo ucwords(strtolower($r->f_name)); ?></td>
+                            <td><?php echo ucwords(strtolower($r->name ?? '')); ?></td>
+                            <td><?php echo ucwords(strtolower($r->f_name ?? '')); ?></td>
                            
                             
                            

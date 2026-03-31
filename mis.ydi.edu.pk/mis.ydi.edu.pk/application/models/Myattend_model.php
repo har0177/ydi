@@ -133,8 +133,9 @@ class Myattend_model
             ]);
                 }else if ($absent >= 3) {
                     // Check if student was admitted within the last 7 days (grace period)
-                    $admission_date = AdminLTE::student_data($userid, "do_admission");
-                    $days_since_admission = (strtotime(date('Y-m-d')) - strtotime($admission_date)) / 86400;
+                    $admission_date = AdminLTE::student_data($userid, "do_admission") ?? '';
+                    $admission_timestamp = !empty($admission_date) ? strtotime($admission_date) : 0;
+                    $days_since_admission = $admission_timestamp > 0 ? (strtotime(date('Y-m-d')) - $admission_timestamp) / 86400 : 999;
 
                     if ($days_since_admission >= 7) {
                         // Only strike off if admitted more than 7 days ago

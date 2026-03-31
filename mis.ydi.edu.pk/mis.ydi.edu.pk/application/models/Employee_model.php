@@ -387,11 +387,8 @@ class Employee_model
 
                 $id = $row['id'];
                 $value = $row['contact'];
-               
-                for ($i = 0;
-                        $i < count($value);
-                        $i++) {
 
+                if (!empty($value)) {
                     AdminLTE::sms($value, $message);
                     $this->db->insert('logs', [
                         'contact' => $value,

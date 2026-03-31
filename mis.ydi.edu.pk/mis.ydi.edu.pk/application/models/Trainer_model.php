@@ -25,7 +25,9 @@ class Trainer_model
         $emp = AdminLTE::user_data($this->session->user_id);
 
         if (!empty($date)) {
-            $q = $this->db->query("Select * from trainer_data where trainer = $emp and WEEKOFYEAR(date) = WEEKOFYEAR('$date') group by regno");
+            $emp = $this->db->escape($emp);
+            $date = $this->db->escape($date);
+            $q = $this->db->query("Select * from trainer_data where trainer = $emp and WEEKOFYEAR(date) = WEEKOFYEAR($date) group by regno");
             if ($q->num_rows() > 0) {
                 return $q->result();
             } else {

@@ -32,7 +32,7 @@
                                 <a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown">
                                     <i class="ace-icon fa fa-circle light-green"></i>
                                     &nbsp;
-                                    <span class="white"><?php echo ucwords(strtolower($r->name)); ?></span>
+                                    <span class="white"><?php echo ucwords(strtolower($r->name ?? '')); ?></span>
                                 </a>
 
                             </div>
@@ -87,7 +87,7 @@
                                 <div class="profile-info-name viewname"> Father / Guardian Name </div>
 
                                 <div class="profile-info-value viewname1">
-                                    <span class="editable" id="username"><?php echo ucwords(strtolower($r->f_name)); ?></span>
+                                    <span class="editable" id="username"><?php echo ucwords(strtolower($r->f_name ?? '')); ?></span>
                                 </div>
                             </div>
 
@@ -190,7 +190,7 @@
                         type: 'column'
                     },
                     title: {
-                        text: 'Admission / Traning Fee Chart of Student <?php echo ucwords(strtolower($r->name)) ?>'
+                        text: 'Admission / Traning Fee Chart of Student <?php echo ucwords(strtolower($r->name ?? '')) ?>'
                     },
 
                     xAxis: {
@@ -202,7 +202,7 @@
                     yAxis: {
                         min: 0,
                         title: {
-                            text: 'Admission / Traning Fee Chart of Student <?php echo ucwords(strtolower($r->name)) ?>'
+                            text: 'Admission / Traning Fee Chart of Student <?php echo ucwords(strtolower($r->name ?? '')) ?>'
                         }
                     },
                     tooltip: {

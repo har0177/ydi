@@ -47,10 +47,6 @@ class School_model
 
             foreach ($batch as
                     $value) {
-
-                for ($i = 0;
-                        $i < count($value);
-                        $i++) {
                     $array = array('batch' => $value);
                     $this->db->where($array);
                     $q = $this->db->get('courses');
@@ -62,7 +58,6 @@ class School_model
                         'course_name' => $course,
                         'batch' => $value
                     );
-                }
             }
             // Insert user into DB
             $sql = $this->db->insert_batch('courses', $data);

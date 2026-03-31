@@ -128,7 +128,7 @@ div img {
                 <img  class="image img-rounded" alt="<?php echo $r->name ?>" src="<?php echo site_url('images/' . $r->img); ?>" />
                 <?php } ?>
                 
-                <p class="name"><?php echo ucwords($r->name)  ?></p>
+                <p class="name"><?php echo ucwords($r->name ?? '')  ?></p>
                 <p class="session">Session : <?php echo dateformates($r->do_admission)  ?></p>
 
                 <p class="adm" style="color: white"><?php echo strtoupper(AdminLTE::student_course($r->course)) ?></p>
