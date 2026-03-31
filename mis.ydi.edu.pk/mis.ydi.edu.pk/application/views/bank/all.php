@@ -126,7 +126,7 @@ $rupee = array();
     foreach ($dated as $dd) {
          $qcc = $this->db->query("SELECT SUM(amount) as total from bank where MONTH(date) = $dd and YEAR(date) = '".  date("Y")."'");
         $va = $qcc->row();
-        if ($va->total == NULL) {
+        if (!$va || $va->total == NULL) {
             $rupee[] = 0;
         } else {
             $rupee[] = $va->total;

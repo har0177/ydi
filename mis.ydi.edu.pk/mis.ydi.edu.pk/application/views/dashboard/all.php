@@ -567,18 +567,18 @@ ON fee.date = salary.date
 												if ($rank <= 3) {
 														$name[] = AdminLTE::student_name($value->regno);
 														$perc[] = $value->percentage;
-														$attend = explode(",", $value->attend)[0];
-														$coop = explode(",", $value->coop)[0];
-														$pre = explode(",", $value->pre)[0];
-														$part = explode(",", $value->part)[0];
-														$ling = explode(",", $value->ling)[0];
-														$punc = explode(",", $value->punc)[0];
+														$attend = explode(",", $value->attend ?? '')[0];
+														$coop = explode(",", $value->coop ?? '')[0];
+														$pre = explode(",", $value->pre ?? '')[0];
+														$part = explode(",", $value->part ?? '')[0];
+														$ling = explode(",", $value->ling ?? '')[0];
+														$punc = explode(",", $value->punc ?? '')[0];
 														$marks = $value->marks;
 														$tmarks = $value->tmarks;
 														
 														
 														$totals[] = (($attend + $coop + $pre + $part + $ling + $punc) / 600) * 60;
-														$totalstra[] = ($marks / $tmarks) * 40;
+														$totalstra[] = ($tmarks != 0) ? ($marks / $tmarks) * 40 : 0;
 												}
 												
 										}
@@ -634,7 +634,7 @@ ON fee.date = salary.date
 																		?>
 
                 }, {
-                  name: '<?php echo $value->stra ?>',
+                  name: '<?php echo isset($value) ? $value->stra : '' ?>',
                   data: <?php echo json_encode($totalstra); ?>
 
                 }, {
@@ -1002,7 +1002,7 @@ foreach ($emp_course->result() as $value) {
 																				$qcc = $this->db->query("SELECT SUM(amount) as total from expenses where exp_id = $v->id and MONTH(date) = $dd and YEAR(date) = '" . date("Y") . "'");
 																		}
 																		$va = $qcc->row();
-																		if ($va->total == NULL) {
+																		if (!$va || $va->total == NULL) {
 																				$rupee[] = 0;
 																		}
 																		else {
@@ -1017,6 +1017,7 @@ foreach ($emp_course->result() as $value) {
                 },
 																<?php
 																unset($rupee);
+																$rupee = array();
 																}
 																?>
 
