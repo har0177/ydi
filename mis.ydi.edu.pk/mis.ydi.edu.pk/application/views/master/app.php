@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <link rel="icon" type="image/jpg" href="<?php echo site_url('images/logo.jpg'); ?>" />
         <meta charset="<?php echo $this->config->item('charset'); ?>">
-        <title><?php echo $heading; ?> : Dashboard - Admin Panel</title>
+        <title><?php echo $heading ?? ''; ?> : Dashboard - Admin Panel</title>
         <link rel="stylesheet" href="<?php echo base_url('dist/css/bootstrap.min.css'); ?>" />
         <link rel="stylesheet" href="<?php echo base_url('dist/font-awesome/css/font-awesome.min.css'); ?>" />
         <link rel="stylesheet" href="<?php echo base_url('dist/font-awesome/css/font-awesome.css'); ?>" />
@@ -72,7 +72,7 @@
                 </div>
                 <div class="navbar-buttons navbar-header pull-right" role="navigation">
                     <ul class="nav ace-nav">
-                        <li><a href="">   <?php echo $this->session->user_name . " - " . $this->session->user_level; ?></a></li>
+                        <li><a href="">   <?php echo ($this->session->user_name ?? '') . " - " . ($this->session->user_level ?? ''); ?></a></li>
                         <li><a href="<?php echo base_url('admin/user/profile') ?>"><i class="ace-icon fa fa-user"></i>Profile</a></li>
                         <li><a href="<?php echo base_url('admin/user/logout'); ?>"> <i class="ace-icon fa fa-power-off"></i>Logout</a> </li>
                     </ul>

@@ -516,13 +516,15 @@ if (!function_exists('array_columnn')) {
     {
         $result = array();
         foreach ($array as $subArray) {
-            if (is_null($indexKey) && array_key_exists($columnKey, $subArray)) {
+            $hasColumn = is_object($subArray) ? property_exists($subArray, $columnKey) : array_key_exists($columnKey, $subArray);
+            $hasIndex = (!is_null($indexKey)) && (is_object($subArray) ? property_exists($subArray, $indexKey) : array_key_exists($indexKey, $subArray));
+            if (is_null($indexKey) && $hasColumn) {
                 $result[] = is_object($subArray)?$subArray->$columnKey: $subArray[$columnKey];
-            } elseif (array_key_exists($indexKey, $subArray)) {
+            } elseif ($hasIndex) {
                 if (is_null($columnKey)) {
                     $index = is_object($subArray)?$subArray->$indexKey: $subArray[$indexKey];
                     $result[$index] = $subArray;
-                } elseif (array_key_exists($columnKey, $subArray)) {
+                } elseif ($hasColumn) {
                     $index = is_object($subArray)?$subArray->$indexKey: $subArray[$indexKey];
                     $result[$index] = is_object($subArray)?$subArray->$columnKey: $subArray[$columnKey];
                 }

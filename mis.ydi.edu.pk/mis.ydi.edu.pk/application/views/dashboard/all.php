@@ -1,7 +1,7 @@
 
 <div class="page-header">
     <h1>    <i class="ace-icon fa fa-dashboard"></i>
-						<?php echo "Dashboard of " . $this->session->user_name . " - " . $this->session->user_level ?>
+						<?php echo "Dashboard of " . ($this->session->user_name ?? '') . " - " . ($this->session->user_level ?? '') ?>
 						<?php
 								echo date("d F, Y");
 						?>  </h1>
@@ -117,9 +117,11 @@
         <script src = "<?php echo base_url(); ?>dist/highcharts.js"></script>
         <script src="<?php echo base_url(); ?>dist/exporting.js"></script>
 						<?php
+								$dates = '';
 								if (isset($_POST["submit"])) {
-										$from = $this->input->post('from');
-										$to = $this->input->post('to');
+										$from = $this->input->post('from') ?? '';
+										$to = $this->input->post('to') ?? '';
+										$dates = $from;
 										$q = $this->db->query('SELECT fee, admfee, fee.date as date, expe, salary
 FROM (
 (SELECT SUM(fee) as fee, date FROM admission_info where fee_status = 1 and DATE(date) BETWEEN "' . $from . '"  AND "' . $to . '"group by date) as fee
@@ -135,7 +137,7 @@ ON fee.date = salary.date
 )');
 								}
 								else {
-										
+
 										$q = $this->db->query('SELECT fee, admfee, fee.date as date, expe, salary
 FROM (
 (SELECT SUM(fee) as fee, MONTHNAME(date) as date FROM admission_info where fee_status = 1 and Month(date)= "' . date("F Y") . '" and Year(date)= "' . date("Y") . '"  group by MONTH(date)) as fee
@@ -150,14 +152,15 @@ LEFT JOIN
 ON fee.date = salary.date
 )');
 								}
-								
-								$rc = json_encode(array_columnn($q->result(), 'expe'), JSON_NUMERIC_CHECK);
-								
-								$sl = json_encode(array_columnn($q->result(), 'salary'), JSON_NUMERIC_CHECK);
-								$admfee = json_encode(array_columnn($q->result(), 'fee'), JSON_NUMERIC_CHECK);
-								$fee = json_encode(array_columnn($q->result(), 'admfee'), JSON_NUMERIC_CHECK);
-								
-								$date = json_encode(array_columnn($q->result(), 'date'), JSON_NUMERIC_CHECK);
+
+								$qResult = $q->result();
+								$rc = json_encode(array_columnn($qResult, 'expe'), JSON_NUMERIC_CHECK);
+
+								$sl = json_encode(array_columnn($qResult, 'salary'), JSON_NUMERIC_CHECK);
+								$admfee = json_encode(array_columnn($qResult, 'fee'), JSON_NUMERIC_CHECK);
+								$fee = json_encode(array_columnn($qResult, 'admfee'), JSON_NUMERIC_CHECK);
+
+								$date = json_encode(array_columnn($qResult, 'date'), JSON_NUMERIC_CHECK);
 						?>
         <script>
           $(function () {
@@ -231,8 +234,8 @@ ON fee.date = salary.date
 								$unpaid = array();
 								$ffdate = array();
 								if (isset($_POST["submit"])) {
-										$from = $this->input->post('from');
-										$to = $this->input->post('to');
+										$from = $this->input->post('from') ?? '';
+										$to = $this->input->post('to') ?? '';
 										$qq = $this->db->query('Select SUM(paid) as paid, SUM(dues) as dues, date_of_payment as date from fee where DATE(date_of_payment) BETWEEN "' . $from . '"  AND "' . $to . '" group by date_of_payment');
 								}
 								else {
@@ -347,11 +350,11 @@ ON fee.date = salary.date
                 data: [{
                   name: 'Users',
                   y: <?php
-																		if ($user == 0) {
+																		if (empty($user ?? 0)) {
 																				echo 0;
 																		}
 																		else {
-																				echo $users;
+																				echo $users ?? 0;
 																		}
 																		?>,
                   sliced: true,
@@ -359,31 +362,31 @@ ON fee.date = salary.date
                 }, {
                   name: 'Students',
                   y: <?php
-																		if ($students == 0) {
+																		if (empty($students ?? 0)) {
 																				echo 0;
 																		}
 																		else {
-																				echo $students;
+																				echo $students ?? 0;
 																		}
 																		?>
                 }, {
                   name: 'Employee',
                   y: <?php
-																		if ($employee == 0) {
+																		if (empty($employee ?? 0)) {
 																				echo 0;
 																		}
 																		else {
-																				echo $employee;
+																				echo $employee ?? 0;
 																		}
 																		?>
                 }, {
                   name: 'Courses',
                   y: <?php
-																		if ($courses == 0) {
+																		if (empty($courses ?? 0)) {
 																				echo 0;
 																		}
 																		else {
-																				echo $courses;
+																				echo $courses ?? 0;
 																		}
 																		?>
                 }]
@@ -404,9 +407,9 @@ ON fee.date = salary.date
 								//)");
 								
 								if (isset($_POST["submit"])) {
-										$from = $this->input->post('from');
-										$to = $this->input->post('to');
-										
+										$from = $this->input->post('from') ?? '';
+										$to = $this->input->post('to') ?? '';
+
 										$q = $this->db->query('SELECT fee, admfee, fee.date as date, expe, salary
 FROM (
 (SELECT SUM(fee) as fee, date FROM admission_info where DATE(date) BETWEEN "' . $from . '"  AND "' . $to . '"group by date) as fee
@@ -439,26 +442,32 @@ ON fee.date = salary.date
 										$revdate = json_encode(array_columnn($q->result(), 'date'), JSON_NUMERIC_CHECK);
 								}
 								
-								$fee = json_encode(array_columnn($q->result(), 'fee'), JSON_NUMERIC_CHECK);
-								$admfee = json_encode(array_columnn($q->result(), 'admfee'), JSON_NUMERIC_CHECK);
-								
-								$expen = json_encode(array_columnn($q->result(), 'expe'), JSON_NUMERIC_CHECK);
+								$qResult2 = $q->result();
+								$feeArr = array_columnn($qResult2, 'fee');
+								$admfeeArr = array_columnn($qResult2, 'admfee');
+								$expeArr = array_columnn($qResult2, 'expe');
+								$salaryArr = array_columnn($qResult2, 'salary');
+
+								$fee = json_encode($feeArr, JSON_NUMERIC_CHECK);
+								$admfee = json_encode($admfeeArr, JSON_NUMERIC_CHECK);
+
+								$expen = json_encode($expeArr, JSON_NUMERIC_CHECK);
 								$revenue = array();
 								$expe = array();
-								$salary = json_encode(array_columnn($q->result(), 'salary'), JSON_NUMERIC_CHECK);
-								
-								foreach (array_keys(array_columnn($q->result(), 'fee') + array_columnn($q->result(), 'admfee')) as
+								$salary = json_encode($salaryArr, JSON_NUMERIC_CHECK);
+
+								foreach (array_keys($feeArr + $admfeeArr) as
 								         $keys) {
-										$revenue[$keys] = array_columnn($q->result(), 'fee')[$keys] + array_columnn($q->result(), 'admfee')[$keys];
+										$revenue[$keys] = ($feeArr[$keys] ?? 0) + ($admfeeArr[$keys] ?? 0);
 								}
-								foreach (array_keys(array_columnn($q->result(), 'expe') + array_columnn($q->result(), 'salary')) as
+								foreach (array_keys($expeArr + $salaryArr) as
 								         $keys) {
-										$expe[$keys] = array_columnn($q->result(), 'expe')[$keys] + array_columnn($q->result(), 'salary')[$keys];
+										$expe[$keys] = ($expeArr[$keys] ?? 0) + ($salaryArr[$keys] ?? 0);
 								}
 								$c = array();
 								foreach (array_keys($revenue + $expe) as
 								         $key) {
-										$c[$key] = $revenue[$key] - $expe[$key];
+										$c[$key] = ($revenue[$key] ?? 0) - ($expe[$key] ?? 0);
 								}
 								?>
 
@@ -531,14 +540,15 @@ ON fee.date = salary.date
 						
 						<?php
 								$courseds = $this->db->query("Select course from trainer_data group by course");
-				
+
 								$date_year = date('Y');
+								if (!isset($dates)) { $dates = ''; }
 								foreach ($courseds->result() as
 								$valds) {
 								if(AdminLTE::user_course($valds->course) == 1){
 								if (isset($_POST["submit"])) {
-							    $dates = $this->input->post('from');
-            $year_from_date = date('Y', strtotime($dates)); // Extract year from $dates
+							    $dates = $this->input->post('from') ?? '';
+            $year_from_date = date('Y', strtotime($dates !== '' ? $dates : 'now')); // Extract year from $dates
 										$query = $this->db->query("Select * from trainer_data where course = $valds->course and YEAR(date) = $year_from_date and WEEKOFYEAR(date)= WEEKOFYEAR('$dates') group by regno order by percentage DESC");
 										
 								}
@@ -634,7 +644,7 @@ ON fee.date = salary.date
 																		?>
 
                 }, {
-                  name: '<?php echo isset($value) ? $value->stra : '' ?>',
+                  name: '<?php echo isset($value) ? ($value->stra ?? '') : '' ?>',
                   data: <?php echo json_encode($totalstra); ?>
 
                 }, {
@@ -662,7 +672,7 @@ ON fee.date = salary.date
 												$cc[] = $emp;
 												
 												if (isset($_POST["submit"])) {
-														$dates = $this->input->post('from');
+														$dates = $this->input->post('from') ?? '';
 														$que = $this->db->query("Select count(percentage) as countp, SUM(percentage) as pertage from trainer_data where trainer = $value->emp_id and YEAR(date) = $date_year and WEEKOFYEAR(date)=WEEKOFYEAR('$dates')");
 												}
 												else {
@@ -745,14 +755,15 @@ ON fee.date = salary.date
 								$totalc = array();
 								$cc = array();
 								if (isset($_POST["submit"])) {
-										$dates = $this->input->post('from');
+										$dates = $this->input->post('from') ?? '';
 										$que = $this->db->query("Select regno, percentage from trainer_data where YEAR(date) = $date_year and WEEKOFYEAR(date)=WEEKOFYEAR('$dates') order by percentage DESC");
 								}
 								else {
+										if (!isset($dates)) { $dates = ''; }
 										$que = $this->db->query("Select regno, percentage from trainer_data where YEAR(date) = $date_year and WEEKOFYEAR(date)=WEEKOFYEAR(CURDATE()) - 1 order by percentage DESC");
 								}
-								
-								
+
+
 								foreach ($que->result() as
 								         $data) {
 										$cc[] = AdminLTE::student_name($data->regno);
@@ -946,15 +957,15 @@ foreach ($emp_course->result() as $value) {
                 categories:
 																<?php
 																if (isset($_POST["submit"])) {
-																		$from = $this->input->post('from');
-																		$to = $this->input->post('to');
+																		$from = $this->input->post('from') ?? '';
+																		$to = $this->input->post('to') ?? '';
 																		$qc = $this->db->query('SELECT date, date as month from expenses where DATE(date) BETWEEN "' . $from . '"  AND "' . $to . '" group by date');
 																}
 																else {
 																		$qc = $this->db->query("SELECT MONTHNAME(date) as date, MONTH(date) as month from expenses group by MONTH(date)");
 																}
-																
-																echo json_encode(array_columnn($qc->result(), 'date'), JSON_NUMERIC_CHECK);
+																$qcResult = $qc->result();
+																echo json_encode(array_columnn($qcResult, 'date'), JSON_NUMERIC_CHECK);
 																?>,
                 crosshair: true
               },
@@ -987,15 +998,15 @@ foreach ($emp_course->result() as $value) {
               series: [
 																<?php
 																$qs = $this->db->query("select * from expense_names");
-																$dated = array_columnn($qc->result(), 'month');
+																$dated = array_columnn($qcResult, 'month');
 																$rupee = array();
 																foreach ($qs->result() as
 																$v) {
 																foreach ($dated as
 																         $dd) {
 																		if (isset($_POST["submit"])) {
-																				$from = $this->input->post('from');
-																				$to = $this->input->post('to');
+																				$from = $this->input->post('from') ?? '';
+																				$to = $this->input->post('to') ?? '';
 																				$qcc = $this->db->query('SELECT SUM(amount) as total from expenses where exp_id = "' . $v->id . '" and date = "' . $dd . '"  group by date');
 																		}
 																		else {
@@ -1034,8 +1045,8 @@ foreach ($emp_course->result() as $value) {
 								$deposit = array();
 								$depdate = array();
 								if (isset($_POST["submit"])) {
-										$from = $this->input->post('from');
-										$to = $this->input->post('to');
+										$from = $this->input->post('from') ?? '';
+										$to = $this->input->post('to') ?? '';
 										$dq = $this->db->query('Select SUM(amount) as deposit, date from bank where DATE(date) BETWEEN "' . $from . '"  AND "' . $to . '" group by date');
 								}
 								else {

@@ -85,7 +85,7 @@ class Template
     public function addView($view, $name = '')
     {
         if (empty($name)) {
-            if (strpos($view, '/') != FALSE) {
+            if (strpos($view, '/') !== FALSE) {
                 $name = substr($view, strrpos($view, '/') + 1);
             } else {
                 $name = $view;
