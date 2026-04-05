@@ -86,6 +86,53 @@ function emptyState($message = 'No items found.') {
     </div>';
 }
 
+// Render a single service card
+function renderServiceCard($f, $color, $icon) {
+    echo '<div class="group relative p-8 bg-slate-50 dark:bg-slate-800/50 rounded-2xl hover:bg-white dark:hover:bg-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 card-hover border-2 border-transparent hover:border-primary-500/20">
+        <div class="flex items-start gap-5">
+            <div class="flex-shrink-0 w-14 h-14 bg-' . $color . '-100 dark:bg-' . $color . '-900/30 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                <svg class="w-7 h-7 text-' . $color . '-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">' . $icon . '</svg>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 group-hover:text-primary-500 transition-colors">
+                    ' . safeHtml($f->feature_title) . '
+                </h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                    ' . safeHtml(cleanString($f->feature_body)) . '
+                </p>
+            </div>
+        </div>
+    </div>';
+}
+
+// Render a single client card
+function renderClientCard($cl) {
+    echo '<div class="group text-center">
+        <div class="relative mb-4 mx-auto w-28 h-28 lg:w-32 lg:h-32">
+            <div class="absolute inset-0 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 p-1 transform group-hover:scale-105 transition-transform duration-300">
+                <div class="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center p-3">
+                    <img loading="lazy" decoding="async" src="' . htmlspecialchars($cl->image) . '" alt="' . safeHtml($cl->title) . '" class="max-w-full max-h-full object-contain">
+                </div>
+            </div>
+        </div>
+        <h4 class="font-semibold text-slate-800 dark:text-white group-hover:text-primary-500 transition-colors text-sm lg:text-base">
+            ' . safeHtml($cl->title) . '
+        </h4>
+    </div>';
+}
+
+// "View More / View Less" toggle button for expandable sections
+function viewMoreToggle() {
+    echo '<div class="text-center mt-10">
+        <button @click="expanded = !expanded" class="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <span x-text="expanded ? \'View Less\' : \'View More\'">View More</span>
+            <svg class="w-5 h-5 transition-transform duration-300" :class="expanded ? \'rotate-180\' : \'\'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+        </button>
+    </div>';
+}
+
 // CTA Section
 function ctaSection($title, $description, $buttonText, $buttonUrl) {
     echo '<section class="py-16 bg-gradient-to-r from-primary-500 to-secondary-500">

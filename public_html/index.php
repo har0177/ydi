@@ -8,45 +8,44 @@
 $features = fetchAll('features', 'feature_id ASC');
 if (count($features) > 0) {
 ?>
-<!-- Features Section -->
-<section class="py-20 bg-white dark:bg-slate-900">
+<!-- Services Section -->
+<?php
+$visibleServicesCount = 6; // 2 rows x 3 columns at lg breakpoint
+$visibleServices = array_slice($features, 0, $visibleServicesCount);
+$hiddenServices = array_slice($features, $visibleServicesCount);
+$icons = [
+    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>',
+    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>',
+    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>',
+    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>',
+    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>',
+    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>'
+];
+$colors = ['primary', 'green', 'purple', 'blue', 'pink', 'amber'];
+?>
+<section class="py-20 bg-white dark:bg-slate-900" x-data="{ expanded: false }">
     <div class="container mx-auto px-4 lg:px-8">
-        <?php sectionHeader('What We Offer', 'primary', 'Our', 'Features', 'Discover the unique aspects that make YDI a premier institution for youth development.'); ?>
+        <?php sectionHeader('What We Offer', 'primary', 'Our', 'Services', 'Discover the unique aspects that make YDI a premier institution for youth development.'); ?>
 
-        <!-- Features Grid -->
+        <!-- Services Grid (visible) -->
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            <?php
-            $icons = [
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>',
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>',
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>',
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>',
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>',
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>'
-            ];
-            $colors = ['primary', 'green', 'purple', 'blue', 'pink', 'amber'];
-
-            foreach ($features as $index => $f) {
-                $color = $colors[$index % count($colors)];
-                $icon = $icons[$index % count($icons)];
-            ?>
-            <div class="group relative p-8 bg-slate-50 dark:bg-slate-800/50 rounded-2xl hover:bg-white dark:hover:bg-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 card-hover border-2 border-transparent hover:border-primary-500/20">
-                <div class="flex items-start gap-5">
-                    <div class="flex-shrink-0 w-14 h-14 bg-<?php echo $color; ?>-100 dark:bg-<?php echo $color; ?>-900/30 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <svg class="w-7 h-7 text-<?php echo $color; ?>-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><?php echo $icon; ?></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 group-hover:text-primary-500 transition-colors">
-                            <?php echo safeHtml($f->feature_title); ?>
-                        </h3>
-                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
-                            <?php echo safeHtml(cleanString($f->feature_body)); ?>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <?php } ?>
+            <?php foreach ($visibleServices as $index => $f) {
+                renderServiceCard($f, $colors[$index % count($colors)], $icons[$index % count($icons)]);
+            } ?>
         </div>
+
+        <?php if (count($hiddenServices) > 0) { ?>
+        <!-- Services Grid (expandable) -->
+        <div x-show="expanded" x-collapse x-cloak>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-6 lg:mt-8">
+                <?php foreach ($hiddenServices as $index => $f) {
+                    $realIndex = $index + $visibleServicesCount;
+                    renderServiceCard($f, $colors[$realIndex % count($colors)], $icons[$realIndex % count($icons)]);
+                } ?>
+            </div>
+        </div>
+        <?php viewMoreToggle(); ?>
+        <?php } ?>
     </div>
 </section>
 <?php } ?>
@@ -56,27 +55,29 @@ $clientsList = fetchAll('clients', 'c_order ASC');
 if (count($clientsList) > 0) {
 ?>
 <!-- Clients Section -->
-<section class="py-20 bg-white dark:bg-slate-900" id="ourClients">
+<?php
+$visibleClientsCount = 12; // 2 rows x 6 columns at xl breakpoint
+$visibleClients = array_slice($clientsList, 0, $visibleClientsCount);
+$hiddenClients = array_slice($clientsList, $visibleClientsCount);
+?>
+<section class="py-20 bg-white dark:bg-slate-900" id="ourClients" x-data="{ expanded: false }">
     <div class="container mx-auto px-4 lg:px-8">
         <?php sectionHeader('Trusted By', 'primary', 'Our', 'Clients', 'Organizations that trust YDI for their training and development needs.'); ?>
 
-        <!-- Clients Grid -->
+        <!-- Clients Grid (visible) -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8">
-            <?php foreach ($clientsList as $cl) { ?>
-            <div class="group text-center">
-                <div class="relative mb-4 mx-auto w-28 h-28 lg:w-32 lg:h-32">
-                    <div class="absolute inset-0 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 p-1 transform group-hover:scale-105 transition-transform duration-300">
-                        <div class="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center p-3">
-                            <img loading="lazy" decoding="async" src="<?php echo htmlspecialchars($cl->image); ?>" alt="<?php echo safeHtml($cl->title); ?>" class="max-w-full max-h-full object-contain">
-                        </div>
-                    </div>
-                </div>
-                <h4 class="font-semibold text-slate-800 dark:text-white group-hover:text-primary-500 transition-colors text-sm lg:text-base">
-                    <?php echo safeHtml($cl->title); ?>
-                </h4>
-            </div>
-            <?php } ?>
+            <?php foreach ($visibleClients as $cl) { renderClientCard($cl); } ?>
         </div>
+
+        <?php if (count($hiddenClients) > 0) { ?>
+        <!-- Clients Grid (expandable) -->
+        <div x-show="expanded" x-collapse x-cloak>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8 mt-8">
+                <?php foreach ($hiddenClients as $cl) { renderClientCard($cl); } ?>
+            </div>
+        </div>
+        <?php viewMoreToggle(); ?>
+        <?php } ?>
     </div>
 </section>
 <?php } ?>
