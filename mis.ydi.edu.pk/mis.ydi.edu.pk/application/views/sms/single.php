@@ -31,7 +31,7 @@
                         ?>
 
                         <div class="radio">
-                            <label><input type="radio" class="sms" onclick="getElements()"  name ="temp" value="<?php echo $r->sms ?>"><?php echo $r->sms ?></label>
+                            <label><input type="radio" class="sms" onclick="getElements()"  name ="temp" value="<?php echo htmlspecialchars($r->sms, ENT_QUOTES, 'UTF-8') ?>"><?php echo htmlspecialchars($r->sms, ENT_QUOTES, 'UTF-8') ?></label>
                         </div>
                         <?php
                     }

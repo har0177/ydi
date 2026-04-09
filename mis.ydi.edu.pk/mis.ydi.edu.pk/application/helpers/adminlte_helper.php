@@ -987,14 +987,21 @@ public static function rank_date($id, $course, $date) {
         $mask = "YDI";
         $lang = "English";
 // Prepare data for POST request
-        $data = "id=" . $id . "&pass=" . $pass . "&mask=" . $mask . "&to=" . $no . "&lang=" . $lang . "&msg=" . $msg;
+        $data = array(
+            'id' => $id,
+            'pass' => $pass,
+            'mask' => $mask,
+            'to' => $no,
+            'lang' => $lang,
+            'msg' => $msg
+        );
 
         //  http://outreach.pk/api/sendsms.php/sendsms/url?id=rchyouthins&pass=webnaxtor1&mask=YDI&to=923339471086&lang=English&msg=Hello&type=xml
 // Send the POST request with cURL
 
         $ch = curl_init('http://www.outreach.pk/api/sendsms.php/sendsms/url');
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responce = curl_exec($ch);
         curl_close($ch);
@@ -1012,14 +1019,21 @@ public static function rank_date($id, $course, $date) {
         $mask = "YDI";
         $lang = "English";
 // Prepare data for POST request
-        $data = "id=" . $id . "&pass=" . $pass . "&mask=" . $mask . "&to=" . $nos . "&lang=" . $lang . "&msg=" . $msg;
+        $data = array(
+            'id' => $id,
+            'pass' => $pass,
+            'mask' => $mask,
+            'to' => $nos,
+            'lang' => $lang,
+            'msg' => $msg
+        );
 
         //  http://outreach.pk/api/sendsms.php/sendsms/url?id=rchyouthins&pass=webnaxtor1&mask=YDI&to=923339471086&lang=English&msg=Hello&type=xml
 // Send the POST request with cURL
 
         $ch = curl_init('http://www.outreach.pk/api/sendsms.php/sendsms/url');
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $responce = curl_exec($ch);
         curl_close($ch);
