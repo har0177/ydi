@@ -209,7 +209,7 @@ $totalPages = ceil($totalVideos / $videosPerPage);
                                     </svg>
                                     YouTube
                                 </div>
-                                <h4 class="font-semibold text-slate-800 dark:text-white text-sm line-clamp-2"><?php echo htmlspecialchars($vid->name ?? ''); ?></h4>
+                                <h4 class="font-semibold text-slate-800 dark:text-white text-sm line-clamp-2"><?php echo htmlspecialchars(html_entity_decode($vid->name ?? '', ENT_QUOTES, 'UTF-8')); ?></h4>
                             </div>
                         </div>
                         <?php } ?>
@@ -353,7 +353,7 @@ if (count($alumniList) > 0) {
 <!-- Alumni Section -->
 <section class="py-20 bg-white dark:bg-slate-900" id="ourAlumni">
     <div class="container mx-auto px-4 lg:px-8">
-        <?php sectionHeader('Our Pride', 'green', 'Buildings Careers;', 'Creating Impact', 'Our interns and graduates applying their skills to succeed in real world environment.'); ?>
+        <?php sectionHeader('Our Pride', 'green', 'Our', 'Alumni', 'Our interns and graduates applying their skills to succeed in real world environment.'); ?>
 
         <!-- Alumni Grid -->
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8">

@@ -15,14 +15,14 @@ if (isset($_GET["id"]) && !empty($_GET["id"])) {
 <section class="page-title-section">
     <div class="container mx-auto px-4 lg:px-8">
         <div class="text-center">
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4"><?php echo htmlspecialchars($r->name ?? 'Video'); ?></h1>
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4"><?php echo htmlspecialchars(html_entity_decode($r->name ?? 'Video', ENT_QUOTES, 'UTF-8')); ?></h1>
             <nav class="flex justify-center">
                 <ol class="flex items-center space-x-2 text-white/80">
                     <li><a href="index.php" class="hover:text-white transition-colors">Home</a></li>
                     <li><span class="mx-2">/</span></li>
                     <li><a href="index.php#ourVideos" class="hover:text-white transition-colors">Videos</a></li>
                     <li><span class="mx-2">/</span></li>
-                    <li class="text-white"><?php echo htmlspecialchars($r->name ?? 'Video'); ?></li>
+                    <li class="text-white"><?php echo htmlspecialchars(html_entity_decode($r->name ?? 'Video', ENT_QUOTES, 'UTF-8')); ?></li>
                 </ol>
             </nav>
         </div>
@@ -47,7 +47,7 @@ if (isset($_GET["id"]) && !empty($_GET["id"])) {
             <!-- Video Info -->
             <div class="mt-8">
                 <h2 class="text-2xl font-bold text-slate-800 dark:text-white mb-4">
-                    <?php echo htmlspecialchars($r->name ?? ''); ?>
+                    <?php echo htmlspecialchars(html_entity_decode($r->name ?? '', ENT_QUOTES, 'UTF-8')); ?>
                 </h2>
                 <?php if (!empty($r->descr)) { ?>
                 <div class="text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -135,7 +135,7 @@ if (isset($_GET["id"]) && !empty($_GET["id"])) {
                 </div>
                 <?php if (!empty($vid->name)) { ?>
                 <div class="p-4">
-                    <h4 class="font-semibold text-slate-800 dark:text-white line-clamp-2"><?php echo htmlspecialchars($vid->name); ?></h4>
+                    <h4 class="font-semibold text-slate-800 dark:text-white line-clamp-2"><?php echo htmlspecialchars(html_entity_decode($vid->name ?? '', ENT_QUOTES, 'UTF-8')); ?></h4>
                 </div>
                 <?php } ?>
             </div>
