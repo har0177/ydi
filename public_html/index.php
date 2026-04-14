@@ -203,12 +203,13 @@ $totalPages = ceil($totalVideos / $videosPerPage);
                                 </div>
                             </div>
                             <div class="p-4">
-                                <div class="flex items-center gap-2 text-red-500 text-sm font-medium">
+                                <div class="flex items-center gap-2 text-red-500 text-sm font-medium mb-1">
                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
                                     </svg>
                                     YouTube
                                 </div>
+                                <h4 class="font-semibold text-slate-800 dark:text-white text-sm line-clamp-2"><?php echo htmlspecialchars($vid->name ?? ''); ?></h4>
                             </div>
                         </div>
                         <?php } ?>
@@ -352,7 +353,7 @@ if (count($alumniList) > 0) {
 <!-- Alumni Section -->
 <section class="py-20 bg-white dark:bg-slate-900" id="ourAlumni">
     <div class="container mx-auto px-4 lg:px-8">
-        <?php sectionHeader('Our Pride', 'green', 'Our', 'Alumni', 'Successful graduates making a difference in the world.'); ?>
+        <?php sectionHeader('Our Pride', 'green', 'Buildings Careers;', 'Creating Impact', 'Our interns and graduates applying their skills to succeed in real world environment.'); ?>
 
         <!-- Alumni Grid -->
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8">
