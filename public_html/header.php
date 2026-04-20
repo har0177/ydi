@@ -175,7 +175,7 @@ unset($entry);
 } ?>
 
                         <a href="https://www.portal.ydi.edu.pk/" class="ml-2 px-5 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white text-sm font-medium rounded-full hover:shadow-lg hover:shadow-primary-500/30 transition-all duration-300 hover:-translate-y-0.5">
-                            Student Portal
+                            MyYDI
                         </a>
 
                         <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" class="ml-2 p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
@@ -231,7 +231,7 @@ unset($entry);
 } ?>
 
                         <div class="pt-4 mt-4 border-t border-slate-200 dark:border-slate-700">
-                            <a href="https://www.portal.ydi.edu.pk/" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-medium rounded-lg">Student Portal</a>
+                            <a href="https://www.portal.ydi.edu.pk/" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-medium rounded-lg">MyYDI</a>
                             <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" class="w-full mt-3 flex items-center justify-center gap-2 px-4 py-3 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-700 dark:text-slate-300">
                                 <span x-text="darkMode ? 'Light Mode' : 'Dark Mode'"></span>
                             </button>

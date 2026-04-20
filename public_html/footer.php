@@ -196,7 +196,7 @@
                     </a></li>
                     <li><a href="https://www.portal.ydi.edu.pk/" class="text-slate-400 hover:text-primary-400 transition-colors flex items-center gap-2 group">
                         <svg class="w-4 h-4 text-primary-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        Student Portal
+                        MyYDI
                     </a></li>
                 </ul>
             </div>
