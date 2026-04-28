@@ -300,12 +300,12 @@
         <?php
         if (!empty(AdminLTE::student_image($this->session->user_logged, 'bg'))) {
             ?>
-            <img src="<?php echo site_url('images/' . AdminLTE::student_image($this->session->user_logged, 'bg')); ?>" height="400px" alt="<?php echo $this->session->user_name ?>" >
+            <img src="<?php echo site_url('images/' . AdminLTE::student_image($this->session->user_logged, 'bg')); ?>" alt="" onerror="this.style.display='none'">
             <?php
         }
         else {
             ?>
-            <img src="<?php echo site_url('assets/img/cover-default.jpg'); ?>" height="400px" alt="<?php echo $this->session->user_name ?>" onerror="this.style.display='none'">
+            <img src="<?php echo site_url('assets/img/cover-default.jpg'); ?>" alt="" onerror="this.style.display='none'">
             <?php
         }
         ?>

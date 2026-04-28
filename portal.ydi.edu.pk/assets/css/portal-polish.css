@@ -12,7 +12,24 @@ html, body {
     color: #0f172a;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    margin: 0;
 }
+
+/* Sticky-footer scaffolding — wrapper fills the viewport,
+   main grows to push footer to the bottom when content is short. */
+.wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100vh !important;
+}
+.wrapper > main,
+.wrapper > .main-section,
+.wrapper main,
+.wrapper .main-section {
+    flex: 1 0 auto !important;
+}
+.wrapper > footer { flex-shrink: 0 !important; }
 
 /* ---------- Reset Bootstrap row/col so Tailwind grids work ---------- */
 .row { max-width: 1320px !important; margin: 0 auto !important; padding: 0 24px !important; display: block !important; }
@@ -23,9 +40,72 @@ html, body {
 @media (max-width: 767px) { .row { padding: 0 14px !important; } }
 main, .main-section, .container, .container-fluid { background: transparent !important; max-width: none !important; padding: 0 !important; }
 
-/* Hide legacy decorative elements */
-.cover-sec { display: none !important; }
 .profile-user-info-striped { display: none !important; }
+
+/* =============================================================
+   Facebook-style profile cover
+============================================================= */
+.cover-sec {
+    display: block !important;
+    position: relative !important;
+    margin: 18px 0 0 !important;
+    height: 220px !important;
+    border-radius: 18px !important;
+    overflow: hidden;
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 35%, #3b82f6 100%);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, .06);
+}
+.cover-sec::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+        radial-gradient(80% 60% at 80% 20%, rgba(255, 255, 255, .12), transparent 60%),
+        radial-gradient(60% 80% at 10% 100%, rgba(0, 0, 0, .15), transparent 60%);
+    pointer-events: none;
+}
+.cover-sec::after {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.12) 1px, transparent 1px);
+    background-size: 22px 22px;
+    pointer-events: none;
+}
+.cover-sec img {
+    width: 100% !important; height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+    position: relative; z-index: 1;
+    color: transparent !important; /* hide alt text if image fails */
+    font-size: 0 !important;
+}
+.cover-sec .post-jb,
+.cover-sec a.post-jb,
+.cover-sec a.post-jb.active {
+    position: absolute !important;
+    right: 16px !important; bottom: 16px !important;
+    width: auto !important; height: 36px !important;
+    line-height: 1 !important;
+    padding: 0 14px 0 12px !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, .92) !important;
+    background-image: none !important;
+    color: #1e293b !important;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, .25) !important;
+    text-indent: 0 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    z-index: 5 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    transition: background .15s ease, transform .15s ease;
+}
+.cover-sec a.post-jb i.fa,
+.cover-sec a.post-jb::before { display: none !important; }
+.cover-sec a.post-jb::after {
+    content: "Edit cover";
+    display: inline-flex; align-items: center; gap: 8px;
+}
+.cover-sec a.post-jb:hover { background: #fff !important; transform: translateY(-1px); }
 
 /* =============================================================
    Header (override the orange bar from style.css)
@@ -145,30 +225,32 @@ main, .main-section, .container, .container-fluid { background: transparent !imp
 .wrapper > header .user-account-settingss { background: transparent !important; border: 0 !important; }
 
 /* =============================================================
-   Profile strip — compact action bar (avatar + name + edit photo)
+   Profile card — Facebook-style overlapping the cover
 ============================================================= */
 .user_profile {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 10px 14px;
-    margin: 0 0 14px;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: -64px 0 24px !important;
     position: relative;
-    text-align: left;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+    text-align: center;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 12px;
-    min-height: 56px;
+    gap: 14px;
 }
 .user-pro-img {
-    width: 52px; height: 52px;
-    flex: 0 0 52px;
-    margin: 0;
+    width: 132px; height: 132px;
+    flex: 0 0 132px;
+    margin: 0 !important;
     border-radius: 50%;
     overflow: hidden;
-    border: 1px solid #e2e8f0;
+    border: 5px solid #fff;
     background: #f1f5f9;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, .15), 0 4px 8px rgba(15, 23, 42, .08);
+    position: relative;
+    z-index: 2;
 }
 .user-pro-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .ydi-avatar-fallback {
@@ -176,34 +258,41 @@ main, .main-section, .container, .container-fluid { background: transparent !imp
     display: flex; align-items: center; justify-content: center;
     background: linear-gradient(135deg, #a78bfa, #7c3aed);
     color: #fff;
-    font-weight: 700; font-size: 22px;
+    font-weight: 700; font-size: 56px;
+    font-family: 'Poppins', sans-serif;
     border-radius: 50%;
 }
 .ydi-avatar-sm { width: 28px; height: 28px; font-size: 12px; display: inline-flex; vertical-align: middle; }
 .profilecam,
 a.profilecam,
 a.profilecam.active {
-    position: static !important;
-    margin-left: auto !important;
+    position: absolute !important;
+    bottom: 4px !important;
+    right: 4px !important;
+    z-index: 3 !important;
+    margin: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     width: 36px !important; height: 36px !important;
-    border-radius: 10px !important;
-    background: #f5f3ff !important;
+    border-radius: 50% !important;
+    background: #1e293b !important;
     background-image: none !important;
-    border: 1px solid #ddd6fe !important;
-    color: #6d28d9 !important;
+    border: 3px solid #fff !important;
+    color: #fff !important;
     font-size: 0 !important;
     flex: 0 0 36px;
-    order: 99;
     text-decoration: none !important;
     transition: all .15s ease;
-    box-shadow: none !important;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, .25) !important;
     transform: none !important;
 }
-.profilecam:hover { background: #ede9fe !important; border-color: #c4b5fd !important; transform: translateY(-1px) !important; }
+.profilecam:hover { background: #0f172a !important; transform: scale(1.05) !important; }
 .profilecam i.fa { display: none !important; }
+.user_profile .user-pro-img { position: relative; }
+.user_profile .profilecam {
+    /* contained by user-pro-img which is now position relative */
+}
 .profilecam::before {
     content: "";
     width: 16px; height: 16px;
@@ -221,93 +310,124 @@ a.profilecam.active {
     text-indent: -9999px !important;
 }
 .post-jb i.fa { display: none !important; }
-.user_pro_status { display: flex; flex-direction: column; gap: 0; }
+.user_pro_status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+}
 .user_pro_status h1.btn {
     background: transparent !important;
     border: 0;
     color: #0f172a !important;
-    font-size: 16px !important;
-    font-weight: 600 !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
     padding: 0 !important;
     pointer-events: none;
     box-shadow: none !important;
     margin: 0 !important;
-    text-align: left;
-    line-height: 1.2;
+    text-align: center;
+    line-height: 1.15;
     font-family: 'Poppins', sans-serif;
+    letter-spacing: -.015em;
 }
 .user_pro_status h1.btn::after {
     content: "Student · YDI";
     display: block;
     color: #64748b;
     font-weight: 500;
-    font-size: 12.5px;
-    margin-top: 2px;
+    font-size: 13px;
+    margin-top: 4px;
     font-family: 'Inter', sans-serif;
+    letter-spacing: 0;
 }
 .user_pro_status br { display: none; }
 
 /* =============================================================
    Tabs
 ============================================================= */
-.tab { width: 100% !important; }
+/* Sidebar layout: nav-tabs becomes a vertical sidebar on the left */
+.tab[role="tabpanel"] {
+    display: grid !important;
+    grid-template-columns: 240px 1fr !important;
+    gap: 24px !important;
+    align-items: start;
+    width: 100% !important;
+}
+@media (max-width: 900px) {
+    .tab[role="tabpanel"] { grid-template-columns: 1fr !important; }
+}
+
 .tab .nav-tabs {
-    border-bottom: 1px solid #e2e8f0 !important;
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    gap: 0;
-    padding: 0 !important;
-    background: transparent;
-    margin-bottom: 0;
+    position: sticky !important;
+    top: 84px;
+    background: #fff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    padding: 8px !important;
+    margin: 0 !important;
     list-style: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
     width: 100%;
 }
 .tab .nav-tabs > li {
     margin: 0 !important;
     float: none !important;
-    display: inline-block !important;
-    flex: 0 0 auto !important;
+    display: block !important;
     list-style: none;
     position: static !important;
+    width: 100% !important;
 }
 .tab .nav-tabs > li > a {
     position: relative !important;
-    background: transparent !important; border: 0 !important;
-    color: #64748b !important;
-    font-size: 13px !important; font-weight: 500 !important;
-    padding: 12px 16px !important;
-    border-radius: 0 !important;
-    transition: color .15s ease;
-    transform: none !important;
-}
-.tab .nav-tabs > li > a:before {
-    content: "" !important;
-    position: absolute !important;
-    left: 0 !important; right: 0 !important; bottom: -1px !important; top: auto !important;
-    height: 2px !important; width: auto !important;
     background: transparent !important;
-    border: 0 !important; border-radius: 0 !important;
-    transform: none !important; z-index: 1 !important;
+    border: 0 !important;
+    color: #475569 !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    padding: 10px 14px !important;
+    border-radius: 10px !important;
+    display: block !important;
+    transition: background .15s ease, color .15s ease;
+    transform: none !important;
+    text-decoration: none !important;
 }
-.tab .nav-tabs > li > a:hover { color: #0f172a !important; background: transparent !important; }
+.tab .nav-tabs > li > a:before { content: none !important; }
+.tab .nav-tabs > li > a:hover {
+    color: #0f172a !important;
+    background: #f8fafc !important;
+}
 .tab .nav-tabs > li.active > a,
 .tab .nav-tabs > li.active > a:focus,
 .tab .nav-tabs > li.active > a:hover {
-    color: #7c3aed !important; background: transparent !important; font-weight: 600 !important;
-}
-.tab .nav-tabs > li.active > a:before {
-    background: linear-gradient(90deg, #7c3aed, #3b82f6) !important;
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 10px rgba(124, 58, 237, .25);
 }
 
+.tab-content {
+    min-width: 0 !important;
+}
 .tab-content .tab-pane {
     background: transparent !important;
     border: 0 !important;
-    border-top: 0 !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    padding: 28px 0 0 !important;
+    padding: 0 !important;
     line-height: 1.5 !important;
+}
+@media (max-width: 900px) {
+    .tab .nav-tabs {
+        position: static !important;
+        flex-direction: row !important;
+        overflow-x: auto;
+    }
+    .tab .nav-tabs > li { flex: 0 0 auto; }
 }
 
 /* =============================================================
@@ -487,11 +607,314 @@ a.profilecam.active {
 .tab-pane .container-fluid > :empty + br ~ br { display: none; }
 
 /* =============================================================
+   Modals (Change Password, Upload Profile / Background Image)
+============================================================= */
+.modal-backdrop {
+    background: rgba(15, 23, 42, .55) !important;
+}
+.modal-backdrop.in { opacity: 1 !important; }
+.modal { padding: 24px !important; }
+.modal-dialog {
+    margin: 5vh auto !important;
+    max-width: 460px !important;
+}
+.modal-content {
+    border: 0 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, .25), 0 8px 22px rgba(15, 23, 42, .12) !important;
+    background: #fff !important;
+    overflow: hidden;
+}
+.modal-header {
+    border-bottom: 1px solid #f1f5f9 !important;
+    padding: 18px 22px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px;
+    background: linear-gradient(180deg, #fafbfd, #ffffff);
+}
+.modal-header .modal-title {
+    margin: 0 !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #0f172a !important;
+    line-height: 1.2 !important;
+    letter-spacing: -.01em;
+}
+.modal-header .close,
+.modal-header a.btn.close,
+.modal-header a.btn.btn-danger.close {
+    position: static !important;
+    margin: 0 !important;
+    width: 32px !important; height: 32px !important;
+    line-height: 1 !important;
+    border-radius: 8px !important;
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    transition: background .15s ease, color .15s ease;
+    text-decoration: none !important;
+}
+.modal-header .close:hover,
+.modal-header a.btn.close:hover {
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+}
+.modal-body {
+    padding: 22px !important;
+}
+.modal-body .form-group { margin-bottom: 16px !important; }
+.modal-body .form-group:last-child { margin-bottom: 0 !important; }
+.modal-body .form-group > div[class^="col-"],
+.modal-body .form-group > div[class*=" col-"] {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+}
+.modal-body .form-group label {
+    display: block !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #334155 !important;
+    margin: 0 0 6px !important;
+    letter-spacing: .01em;
+}
+.modal-body input[type=password],
+.modal-body input[type=text],
+.modal-body input[type=email] {
+    width: 100% !important;
+    height: 42px !important;
+    background: #fff !important;
+    color: #0f172a !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    padding: 0 12px !important;
+    font-size: 14px !important;
+    text-align: left !important;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+.modal-body input[type=password]:focus,
+.modal-body input[type=text]:focus,
+.modal-body input[type=email]:focus {
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, .15) !important;
+    outline: none !important;
+}
+.modal-body input[type=file] {
+    width: 100% !important;
+    padding: 14px !important;
+    border: 1.5px dashed #cbd5e1 !important;
+    border-radius: 10px !important;
+    background: #f8fafc !important;
+    font-size: 13px !important;
+    color: #475569 !important;
+    cursor: pointer !important;
+    transition: border-color .15s ease, background .15s ease;
+}
+.modal-body input[type=file]:hover {
+    border-color: #7c3aed !important;
+    background: #f5f3ff !important;
+}
+.modal-body input[type=file]::file-selector-button {
+    background: #7c3aed !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    padding: 6px 12px !important;
+    margin-right: 12px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+}
+.modal-body input[type=submit].btn {
+    width: 100% !important;
+    height: 44px !important;
+    border-radius: 10px !important;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+    color: #fff !important;
+    border: 0 !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, .25) !important;
+    cursor: pointer;
+    transition: filter .15s ease, transform .15s ease;
+}
+.modal-body input[type=submit].btn:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+}
+.modal-body label:has(input[type=submit]) {
+    width: 100% !important;
+    margin: 4px 0 0 !important;
+}
+
+/* =============================================================
+   YDI Chat Room widget
+============================================================= */
+.chat-mg img {
+    width: 56px !important; height: 56px !important;
+    border-radius: 50% !important;
+    box-shadow: 0 8px 22px rgba(124, 58, 237, .35) !important;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    padding: 14px;
+    transition: transform .2s ease;
+}
+.chat-mg img:hover { transform: scale(1.06); }
+.chat-mg { z-index: 100 !important; }
+.conversation-box {
+    width: 340px !important;
+    background: #fff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, .25), 0 8px 22px rgba(15, 23, 42, .12) !important;
+    position: fixed !important;
+    right: 24px !important;
+    bottom: 100px !important;
+    z-index: 101 !important;
+    display: none;
+}
+.con-title {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 14px 18px !important;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+    color: #fff !important;
+}
+.con-title h3 {
+    margin: 0 !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+    display: flex; align-items: center; gap: 8px;
+}
+.con-title h3 i.fa { font-size: 14px !important; opacity: .85; }
+.con-title a {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .15);
+    color: #fff !important;
+    display: inline-flex !important; align-items: center; justify-content: center;
+    transition: background .15s ease;
+    text-decoration: none !important;
+    flex: 0 0 28px;
+}
+.con-title a:hover { background: rgba(255, 255, 255, .28); }
+.con-title a i.fa { font-size: 12px; }
+.conversation-box .panel-body {
+    background: #f8fafc !important;
+    padding: 14px 16px !important;
+    height: 320px !important;
+    overflow-y: auto !important;
+    border: 0 !important;
+}
+.conversation-box .panel-body .chat {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex; flex-direction: column; gap: 8px;
+}
+.conversation-box .panel-body .chat li {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #0f172a;
+    max-width: 80%;
+}
+.conversation-box .panel-footer {
+    background: #fff !important;
+    border-top: 1px solid #e2e8f0 !important;
+    padding: 12px !important;
+}
+.conversation-box .input-group {
+    display: flex !important;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+}
+.conversation-box .input-group .form-control {
+    flex: 1 !important;
+    height: 38px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    background: #f8fafc !important;
+    padding: 0 12px !important;
+    font-size: 13px !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+}
+.conversation-box .input-group .form-control:focus {
+    border-color: #7c3aed !important;
+    background: #fff !important;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, .12) !important;
+    outline: none !important;
+}
+.conversation-box .input-group-btn { display: inline-flex !important; }
+.conversation-box .input-group-btn .btn {
+    height: 38px !important;
+    background: #7c3aed !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    padding: 0 18px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    box-shadow: 0 2px 6px rgba(124, 58, 237, .25) !important;
+}
+.conversation-box .input-group-btn .btn:hover { filter: brightness(1.05); }
+
+/* =============================================================
    Footer
 ============================================================= */
-footer .footy-sec p {
-    font-size: 12px; color: #64748b;
-    margin: 16px 0; text-align: center;
+.wrapper > footer {
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0 !important;
+    margin-top: 32px;
+}
+.wrapper > footer .footy-sec {
+    background: transparent !important;
+    margin: 0 !important;
+}
+.wrapper > footer .footy-sec .container {
+    max-width: 1320px !important;
+    margin: 0 auto !important;
+    padding: 18px 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.wrapper > footer .footy-sec .container::before {
+    content: "YDI Student Portal";
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #0f172a;
+    letter-spacing: -.01em;
+}
+.wrapper > footer .footy-sec p {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0 !important;
+    text-align: right;
+    font-weight: 500;
 }
 
 /* =============================================================
