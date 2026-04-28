@@ -1210,70 +1210,67 @@
                         $news = AdminLTE::fetch_data($config["per_page"], $page, $course);
                         $links = $this->pagination->create_links();
                         if (!empty($news)) {
-
-                            foreach ($news as
-                                    $n) {
-                                ?>
-                    
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="col-sm-4">
-                         
-                                            <?php
-                                            $image = pathinfo($n->data, PATHINFO_EXTENSION);
-                                            $ext = strtolower($image);
-                                           
-                                            if ($ext == "jpg" || $ext == "jpeg" || $ext == "png" || $ext == "gif") {
-                                                ?>
-                                    <img target="_blank" src="https://mis.ydi.edu.pk/materials/<?php echo $n->data ?>" alt="<?php echo $n->topic ?>" class="img-responsive center-block" > 
-                                   
-                                                    
-                                                <?php
-                                                if(!empty($n->link)){
-                                                    ?>
-                                    <p style="text-align: center; line-height: 50px">
-                                        <a href="<?php echo $n->link ?>" class="btn btn-sm btn-danger" target="_blank">Play Video</a></p>
-                                                <?php
-                                                }
-                                            }
-                                            else {
-                                                ?>
-                                                  <a href="https://mis.ydi.edu.pk/materials/<?php echo $n->data ?>" class="btn btn-sm btn-info center-block">Download Documents</a> 
-                                                <?php
-                                                if(!empty($n->link)){
-                                                    ?>
-                                                 <p style="text-align: center; line-height: 50px">
-                                                <a href="<?php echo $n->link ?>" class="btn btn-sm btn-danger" target="_blank">Play Video</a>
-                                                 </p>
-                                                <?php
-                                                }
-                                            }
-                                            
-                                            
-                                            ?>
-                                </div>
-                        <div class="col-sm-8" style="text-align: justify;  border: 4px solid white; font-family: 'Times New Roman'">
-                                   
-                            <h3 style="text-transform: uppercase"><?php echo $n->topic ?></h3>
-                            <br>
-                                            <p><?php echo $n->comments ?></p>
-                                            <p style="text-align: center">***********************************</p>
-                                        </div>
-                           
-                                </div>
-                             </div>
-                                <?php
-                            }
                             ?>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <?php foreach ($news as $n):
+                                $image = strtolower(pathinfo($n->data, PATHINFO_EXTENSION));
+                                $isImg = in_array($image, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                                $isPdf = $image === 'pdf';
+                                $isAud = in_array($image, ['mp3', 'wav', 'm4a', 'ogg']);
+                                $isVid = in_array($image, ['mp4', 'mov', 'webm']);
+                                $iconColor = $isImg ? 'violet' : ($isPdf ? 'rose' : ($isAud ? 'amber' : ($isVid ? 'blue' : 'emerald')));
+                                $iconLabel = strtoupper($image ?: 'FILE');
+                                ?>
+                                <article class="group bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-primary-200 transition flex flex-col">
+                                    <?php if ($isImg): ?>
+                                        <div class="aspect-video bg-slate-100 overflow-hidden">
+                                            <img src="https://mis.ydi.edu.pk/materials/<?php echo htmlspecialchars($n->data); ?>"
+                                                 alt="<?php echo htmlspecialchars($n->topic); ?>"
+                                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                                                 onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center bg-slate-100 text-slate-400 text-xs font-semibold\'>IMAGE UNAVAILABLE</div>'">
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="aspect-video bg-gradient-to-br from-<?php echo $iconColor; ?>-50 to-<?php echo $iconColor; ?>-100 flex items-center justify-center">
+                                            <div class="w-16 h-20 rounded-lg bg-white border border-<?php echo $iconColor; ?>-200 flex flex-col items-center justify-center shadow-sm">
+                                                <svg class="w-7 h-7 text-<?php echo $iconColor; ?>-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                                <span class="text-[9px] font-bold text-<?php echo $iconColor; ?>-600 mt-1 tracking-wider"><?php echo $iconLabel; ?></span>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
 
-                            <br>
-                            <?php echo $links; ?>
+                                    <div class="p-5 flex-1 flex flex-col">
+                                        <h4 class="font-display text-base font-semibold text-slate-900 leading-snug tracking-tight"><?php echo htmlspecialchars($n->topic); ?></h4>
+                                        <p class="text-sm text-slate-600 mt-2 leading-relaxed line-clamp-4 flex-1"><?php echo htmlspecialchars($n->comments); ?></p>
+                                        <div class="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-slate-100">
+                                            <a href="https://mis.ydi.edu.pk/materials/<?php echo htmlspecialchars($n->data); ?>" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-50 hover:bg-primary-100 text-primary-700 text-xs font-semibold transition border border-primary-100">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                                Download
+                                            </a>
+                                            <?php if (!empty($n->link)): ?>
+                                                <a href="<?php echo htmlspecialchars($n->link); ?>" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold transition border border-rose-100">
+                                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                                    Play Video
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </article>
+                            <?php endforeach; ?>
+                            </div>
 
-               
+                            <div class="mt-6"><?php echo $links; ?></div>
                             <?php
                         }
                         else {
-                            echo "No Data Found!";
+                            ?>
+                            <div class="bg-white border border-dashed border-slate-300 rounded-2xl p-10 text-center">
+                                <div class="w-12 h-12 rounded-2xl bg-slate-100 mx-auto mb-3 flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+                                </div>
+                                <p class="font-display text-base font-semibold text-slate-900">No practice materials yet</p>
+                                <p class="text-sm text-slate-500 mt-1">Your trainer will upload course materials here. Check back later.</p>
+                            </div>
+                            <?php
                         }
                         ?>
                         </div>
