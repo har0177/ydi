@@ -1475,8 +1475,10 @@ Expected: no output. If anything matches, delete the line before committing.
 
 - [ ] **Step 4: Commit the screenshots**
 
+`*.png` is in `.gitignore`, so the screenshots must be force-added (consistent with how Task 1 committed the baseline):
+
 ```bash
-git add portal-login-after.png flow-*.png
+git add -f portal-login-after.png flow-1-login.png flow-2-identify.png flow-3-otp.png flow-4-newpw.png flow-5-portal.png
 git commit -m "Add post-redesign + reset-flow walk-through screenshots"
 ```
 
