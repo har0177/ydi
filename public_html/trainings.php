@@ -39,12 +39,17 @@
                 </div>
                 <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-3 group-hover:text-primary-500 transition-colors">Teachers' Development</h3>
                 <p class="text-slate-600 dark:text-slate-400 mb-4">Enhance teaching methodologies, classroom management, and pedagogical skills.</p>
-                <a href="contact.php" class="inline-flex items-center gap-2 text-primary-500 font-medium">
-                    Learn More
+                <button
+                    type="button"
+                    data-service="Teachers&#039; Development"
+                    @click="enquireService = $event.currentTarget.dataset.service; enquireOpen = true"
+                    class="inline-flex items-center gap-2 text-primary-500 font-medium hover:text-primary-600 transition-colors"
+                >
+                    Enquire Now
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
-                </a>
+                </button>
             </div>
 
             <!-- Students' Development -->
@@ -56,12 +61,17 @@
                 </div>
                 <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-3 group-hover:text-green-500 transition-colors">Students' Development</h3>
                 <p class="text-slate-600 dark:text-slate-400 mb-4">Build leadership skills, critical thinking, and personal development for students.</p>
-                <a href="contact.php" class="inline-flex items-center gap-2 text-green-500 font-medium">
-                    Learn More
+                <button
+                    type="button"
+                    data-service="Students&#039; Development"
+                    @click="enquireService = $event.currentTarget.dataset.service; enquireOpen = true"
+                    class="inline-flex items-center gap-2 text-green-500 font-medium hover:text-green-600 transition-colors"
+                >
+                    Enquire Now
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
-                </a>
+                </button>
             </div>
 
             <!-- English Proficiency -->
@@ -73,12 +83,17 @@
                 </div>
                 <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-3 group-hover:text-blue-500 transition-colors">English Proficiency</h3>
                 <p class="text-slate-600 dark:text-slate-400 mb-4">Comprehensive English language training from beginner to advanced levels.</p>
-                <a href="contact.php" class="inline-flex items-center gap-2 text-blue-500 font-medium">
-                    Learn More
+                <button
+                    type="button"
+                    data-service="English Proficiency"
+                    @click="enquireService = $event.currentTarget.dataset.service; enquireOpen = true"
+                    class="inline-flex items-center gap-2 text-blue-500 font-medium hover:text-blue-600 transition-colors"
+                >
+                    Enquire Now
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
-                </a>
+                </button>
             </div>
 
             <!-- Creative Writing -->
@@ -90,12 +105,17 @@
                 </div>
                 <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-3 group-hover:text-purple-500 transition-colors">Creative Writing</h3>
                 <p class="text-slate-600 dark:text-slate-400 mb-4">Develop creative writing skills for storytelling, content creation, and journalism.</p>
-                <a href="contact.php" class="inline-flex items-center gap-2 text-purple-500 font-medium">
-                    Learn More
+                <button
+                    type="button"
+                    data-service="Creative Writing"
+                    @click="enquireService = $event.currentTarget.dataset.service; enquireOpen = true"
+                    class="inline-flex items-center gap-2 text-purple-500 font-medium hover:text-purple-600 transition-colors"
+                >
+                    Enquire Now
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
-                </a>
+                </button>
             </div>
 
             <!-- Film Making -->
@@ -107,12 +127,17 @@
                 </div>
                 <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-3 group-hover:text-pink-500 transition-colors">Film Making</h3>
                 <p class="text-slate-600 dark:text-slate-400 mb-4">Learn video production, editing, and storytelling through visual media.</p>
-                <a href="contact.php" class="inline-flex items-center gap-2 text-pink-500 font-medium">
-                    Learn More
+                <button
+                    type="button"
+                    data-service="Film Making"
+                    @click="enquireService = $event.currentTarget.dataset.service; enquireOpen = true"
+                    class="inline-flex items-center gap-2 text-pink-500 font-medium hover:text-pink-600 transition-colors"
+                >
+                    Enquire Now
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
-                </a>
+                </button>
             </div>
 
             <!-- Photography -->
@@ -125,12 +150,17 @@
                 </div>
                 <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-3 group-hover:text-amber-500 transition-colors">Photography</h3>
                 <p class="text-slate-600 dark:text-slate-400 mb-4">Master photography techniques, lighting, and post-processing skills.</p>
-                <a href="contact.php" class="inline-flex items-center gap-2 text-amber-500 font-medium">
-                    Learn More
+                <button
+                    type="button"
+                    data-service="Photography"
+                    @click="enquireService = $event.currentTarget.dataset.service; enquireOpen = true"
+                    class="inline-flex items-center gap-2 text-amber-500 font-medium hover:text-amber-600 transition-colors"
+                >
+                    Enquire Now
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
-                </a>
+                </button>
             </div>
         </div>
     </div>
