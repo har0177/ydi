@@ -1,230 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta charset="utf-8" />
-        <link rel="icon" type="image/jpg" href="<?php echo site_url('images/logo.jpg'); ?>" />
-        <title>YDI - Login Page</title>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="YDI Student Portal — sign in to access your trainings, schedule, and progress." />
+    <title>Sign in &middot; YDI Student Portal</title>
 
-        <meta name="description" content="User login page" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="icon" type="image/jpg" href="<?php echo site_url('images/logo.jpg'); ?>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/portal-login.css" />
+</head>
+<body>
 
-        <!-- bootstrap & fontawesome -->
-        <link rel="stylesheet" href="<?php echo base_url() ?>dist/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="<?php echo base_url() ?>dist/font-awesome/css/font-awesome.css" />
+<main class="login-v2">
+    <div class="frame">
 
-        <!-- text fonts -->
-        <link rel="stylesheet" href="<?php echo base_url() ?>dist/css/fonts.googleapis.com.css" />
-        <!-- ace styles -->
-        <link rel="stylesheet" href="<?php echo base_url() ?>dist/css/ace.min.css" />
+        <!-- LEFT: brand hero -->
+        <aside class="hero">
+            <div class="hero-top">
+                <div class="brand">
+                    <span class="brand-mark">Y</span>
+                    <span class="brand-text">YDI Student Portal</span>
+                </div>
+            </div>
+            <div class="hero-mid">
+                <h1 class="hero-title">Welcome back.<br>Pick up where you left off.</h1>
+                <p class="hero-lede">Your trainings, schedule, and progress &mdash; all in one place. Sign in to continue your learning journey.</p>
+            </div>
+            <div class="hero-foot">YDI Training &amp; Consultancy &middot; Xpertz Dev &copy; <?php echo date('Y'); ?></div>
+        </aside>
 
-        <!--[if lte IE 9]>
-                <link rel="stylesheet" href="<?php echo base_url() ?>css/ace-part2.min.css" />
-        <![endif]-->
-        <link rel="stylesheet" href="<?php echo base_url() ?>dist/css/ace-rtl.min.css" />
-        <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/portal-polish.css" />
+        <!-- RIGHT: sign-in form -->
+        <section class="panel">
+            <span class="eyebrow">Student Login</span>
+            <h2 class="panel-title">Sign in to your portal</h2>
+            <p class="panel-sub">Use the username and password issued by your trainer.</p>
 
-        <!--[if lte IE 9]>
-          <link rel="stylesheet" href="<?php echo base_url() ?>css/ace-ie.min.css" />
-        <![endif]-->
+            <?php flash_alert(); echo validation_errors('<div class="alert alert-danger">', '</div>'); ?>
 
-        <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+            <?php echo form_open('user/login', ['class' => 'login-form', 'novalidate' => '']); ?>
+                <div class="field">
+                    <label for="username">Username</label>
+                    <div class="input">
+                        <input id="username" name="username" type="text" required placeholder="e.g. ahmed.k" autocomplete="username" />
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 14a4 4 0 10-8 0M12 11a3 3 0 100-6 3 3 0 000 6zM4 20c0-3.314 3.582-6 8-6s8 2.686 8 6"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <div class="input">
+                        <input id="password" name="password" type="password" required placeholder="Enter your password" autocomplete="current-password" />
+                        <button type="button" class="toggle" data-pw-toggle="password" aria-label="Show password">SHOW</button>
+                    </div>
+                </div>
 
-        <!--[if lte IE 8]>
-        <script src="assets/js/html5shiv.min.js"></script>
-        <script src="assets/js/respond.min.js"></script>
-        <![endif]-->
-        <style>
-            fieldset 
-            {
-                border: 1px solid #ddd !important;
-                margin: 0;
-                xmin-width: 0;
-                padding: 10px;       
-                position: relative;
-                border-radius:4px;
-                background-color:#f5f5f5;
-                padding-left:10px!important;
-            }	
+                <button type="submit" class="btn btn-primary" data-disable-on-submit>
+                    <span class="btn-label">Sign in</span>
+                    <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6"/>
+                    </svg>
+                </button>
+            <?php echo form_close(); ?>
 
-            legend
-            {
-                font-size:14px;
-                font-weight:bold;
-                margin-bottom: 0px; 
-                width: 90%; 
-                border: 1px solid #ddd;
-                border-radius: 4px; 
-                padding: 5px 5px 5px 10px; 
-                background-color: #ffffff;
-            }
-            .form-horizontal .control-label {
-                text-align: center;
-                margin-bottom: 0;
-                padding-top: 7px;
-            }
+            <p class="help-line">Trouble signing in? <a href="mailto:info@ydi.edu.pk">Contact support</a></p>
+        </section>
 
-        </style>
-    </head>
+    </div>
+</main>
 
-    <body class="login-layout">
-        <div class="main-container">
-            <div class="main-content">
-                <div class="row">
-                    <div class="col-sm-10 col-sm-offset-1">
-                        <div class="login-container">
-                            <div class="center">
-                                <h1>
-                                    <i class="ace-icon fa fa-book green"></i>
-                                    <span class="red">YDI</span>
-                                    <span class="white" id="id-text2">Student Portal</span>
-                                </h1>
+<script src="<?php echo base_url() ?>dist/jquery.min.js"></script>
+<script>
+jQuery(function ($) {
+    // Password show/hide toggle.
+    $(document).on('click', '.login-v2 [data-pw-toggle]', function () {
+        var id = $(this).data('pw-toggle');
+        var $input = $('#' + id);
+        var showing = $input.attr('type') === 'text';
+        $input.attr('type', showing ? 'password' : 'text');
+        $(this).text(showing ? 'SHOW' : 'HIDE')
+               .attr('aria-label', showing ? 'Show password' : 'Hide password');
+    });
 
-                            </div>
+    // Disable submit button on form submit (prevents double-post).
+    $(document).on('submit', '.login-v2 form', function () {
+        $(this).find('[data-disable-on-submit]')
+               .prop('disabled', true)
+               .addClass('is-loading');
+    });
+});
+</script>
 
-                            <div class="space-6"></div>
-                            <div class="position-relative">
-                                <div id="login-box" class="login-box visible widget-box no-border">
-                                    <div class="widget-body">
-                                        <div class="widget-main">
-                                            <h4 class="text-center blue lighter bigger">
-                                                <img  height="80px" alt="logo" src="https://mis.ydi.edu.pk/images/logo.jpg" />
-
-                                            </h4>
-
-                                            <div class="space-6"></div>
-
-                                            <fieldset >
-                                                <legend>Student Login</legend>
-                                                <?php
-                                                flash_alert();
-                                                echo validation_errors('<div class="alert alert-danger">', '</div>')
-                                                ?>
-                                                <?php echo form_open('user/login', ['class' => 'form-horizontal']); ?>
-
-                                                <label class="block clearfix">
-                                                    <span class="block input-icon input-icon-right">
-                                                        <input class="form-control" required="" placeholder="Username" id="username" name="username" type="text" />  <i class="ace-icon fa fa-envelope"></i>
-                                                    </span>
-                                                </label>
-
-                                                <label class="block clearfix">
-                                                    <span class="block input-icon input-icon-right">
-                                                        <input class="form-control " required="" placeholder="Password"  id="password" name="password" type="password" />  <i class="ace-icon fa fa-lock"></i>
-                                                    </span>
-                                                </label>
-                                               
-
-                                                <div class="clearfix">
-                                                    <button type="submit" class="width-35 pull-right btn btn-sm btn-success">
-                                                        <i class="ace-icon fa fa-key"></i>
-                                                        <span class="bigger-110">Login</span>
-                                                    </button>
-                                                </div>
-
-                                            </fieldset>
-
-
-                                            <?php echo form_close(); ?>
-
-                                        </div><!-- /.widget-main -->
-
-                                        <div class="toolbar clearfix">
-                                            <div>
-                                                <a href="#" data-target="#forgot-box" class="forgot-password-link">
-                                                    <i class="ace-icon fa fa-arrow-left"></i>
-                                                    I Forgot My Password
-                                                </a>
-                                            </div>
-
-                                        </div>
-                                    </div><!-- /.widget-body -->
-                                </div><!-- /.login-box -->
-
-                                <div id="forgot-box" class="forgot-box widget-box no-border">
-                                    <div class="widget-body">
-                                        <div class="widget-main">
-                                            <h4 class="text-center blue lighter bigger">
-                                                <img  height="80px" alt="logo" src="https://mis.ydi.edu.pk/images/logo.jpg" />
-
-                                            </h4>
-
-                                            <div class="space-6"></div>
-                                            <p>
-                                                Enter Your Email Address to Receive Instructions!
-                                            </p>
-
-                                            <?php echo form_open('user/forget', ['class' => 'form-horizontal']); ?>
-
-                                            <fieldset>
-                                                <legend>Retrieve Password</legend>
-                                                <label class="block clearfix">
-                                                    <span class="block input-icon input-icon-right">
-                                                        <input type="email" name="email" class="form-control" placeholder="Email" />
-                                                        <i class="ace-icon fa fa-envelope"></i>
-                                                    </span>
-                                                </label>
-
-                                                <div class="clearfix">
-                                                    <button type="submit" class="width-35 pull-right btn btn-sm btn-danger">
-                                                        <i class="ace-icon fa fa-lightbulb-o"></i>
-                                                        <span class="bigger-110">Send Me!</span>
-                                                    </button>
-                                                </div>
-                                            </fieldset>
-
-
-                                            <?php echo form_close(); ?>
-
-                                        </div><!-- /.widget-main -->
-
-                                        <div class="toolbar center">
-                                            <a href="#" data-target="#login-box" class="back-to-login-link">
-                                                Back to Login
-                                                <i class="ace-icon fa fa-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div><!-- /.widget-body -->
-                                </div><!-- /.forgot-box -->
-
-
-                            </div><!-- /.position-relative -->
-
-                            <div class="footer-content" style="text-align: center">
-                                <span class="bigger-120" style="color: #fff">
-                                    <span class="blue bolder">YDI</span>
-                                    <br>
-                                    Xpertz Dev &copy; <?php echo date('Y'); ?>
-                                </span>
-
-                                &nbsp; &nbsp;
-                            </div>
-                        </div>
-                    </div><!-- /.col -->
-
-                </div><!-- /.row -->
-
-
-            </div><!-- /.main-content -->
-
-        </div><!-- /.main-container -->
-
-        <!-- basic scripts -->
-        <script src="<?php echo base_url() ?>dist/jquery.min.js"></script>
-
-
-        <!-- inline scripts related to this page -->
-        <script type="text/javascript">
-            jQuery(function ($) {
-                $(document).on('click', '.toolbar a[data-target]', function (e) {
-                    e.preventDefault();
-                    var target = $(this).data('target');
-                    $('.widget-box.visible').removeClass('visible');//hide others
-                    $(target).addClass('visible');//show target
-                });
-            });
-
-        </script>
-
-    </body>
+</body>
 </html>
