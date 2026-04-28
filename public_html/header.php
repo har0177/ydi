@@ -250,6 +250,14 @@ unset($entry);
             Quizzes
         </a>
 
+        <!-- Floating Enquire Now Button (global trigger) -->
+        <button type="button" @click="enquireService = ''; enquireOpen = true" class="fixed left-0 top-1/2 transform -translate-y-1/2 z-40 px-4 py-3 bg-gradient-to-r from-secondary-600 to-secondary-500 text-white text-sm font-bold rounded-r-full shadow-lg hover:shadow-xl hover:translate-x-1 transition-all duration-300 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+            Enquire
+        </button>
+
         <!-- Spacer for fixed header -->
         <div class="h-16 lg:h-20"></div>
 

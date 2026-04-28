@@ -14,11 +14,26 @@ test.describe('Enquire Now modal', () => {
     // Modal heading
     await expect(page.getByRole('heading', { name: 'Enquire Now' })).toBeVisible();
 
-    // Service field is read-only and pre-filled
+    // Service field is pre-filled (editable so users can override or add detail)
     const serviceField = page.locator('#enquireServiceField');
     await expect(serviceField).toBeVisible();
     await expect(serviceField).toHaveValue("Teachers' Development");
-    await expect(serviceField).toHaveAttribute('readonly', '');
+  });
+
+  test('opens from the global floating Enquire button with empty service', async ({ page }) => {
+    await page.goto(`${BASE_URL}/index.php`);
+
+    // The floating button has just the text "Enquire" (no card "Enquire Now")
+    await page.getByRole('button', { name: 'Enquire', exact: true }).click();
+
+    await expect(page.getByRole('heading', { name: 'Enquire Now' })).toBeVisible();
+
+    // Service field is empty and editable from the global trigger
+    const serviceField = page.locator('#enquireServiceField');
+    await expect(serviceField).toBeVisible();
+    await expect(serviceField).toHaveValue('');
+    await serviceField.fill('IELTS Training');
+    await expect(serviceField).toHaveValue('IELTS Training');
   });
 
   test('closes when the close button is clicked', async ({ page }) => {
