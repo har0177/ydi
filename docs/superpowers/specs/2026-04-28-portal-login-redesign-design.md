@@ -74,7 +74,7 @@ New checkbox below the password field, left-aligned. Name `remember`. Not curren
 Full-width gradient button. Replaces the small orange `btn-success` `width-35 pull-right` button. Includes a small arrow icon on the right.
 
 ### Help line
-"Trouble signing in? Contact support" with a `mailto:` link to a support address (TBD which one — recommend `support@ydi.edu.pk` or whichever inbox is monitored). Replaces the lone "I Forgot My Password" link in the toolbar.
+"Trouble signing in? Contact support" with a `mailto:info@ydi.edu.pk` link. Replaces the lone "I Forgot My Password" link in the toolbar.
 
 ### Forgot password panel
 Same right-side surface, swapped in via the existing jQuery toggle (`$('.widget-box.visible')` swap). Heading "Reset your password," single email field, "Send reset instructions" button, "Back to sign in" affordance both at the top (with arrow) and at the bottom (in the help line). Form action and field name (`email`) unchanged.
@@ -127,6 +127,5 @@ Same right-side surface, swapped in via the existing jQuery toggle (`$('.widget-
 
 ## Open questions to resolve during implementation
 
-- Confirm the support contact email (`support@ydi.edu.pk` proposed).
 - Confirm whether the status pill should ship in v1 or be removed until the copy can be made dynamic. Default: ship hardcoded.
 - Decide whether to keep the new styles in `portal-polish.css` or split into a dedicated `portal-login.css`. Default: dedicated file, loaded only on the login view.
