@@ -1,0 +1,31 @@
+/* =============================================================
+   YDI Student Portal — login page
+   Scoped under .login-v2; nothing here may leak elsewhere.
+============================================================= */
+
+.login-v2 *,
+.login-v2 *::before,
+.login-v2 *::after { box-sizing: border-box; }
+
+.login-v2 {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: #f8fafc;
+    color: #0f172a;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.login-v2 .frame {
+    display: flex;
+    width: 100%;
+    max-width: 1080px;
+    min-height: 600px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, .12);
+}
