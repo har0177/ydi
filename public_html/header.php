@@ -124,7 +124,7 @@ unset($entry);
     </style>
 </head>
 
-<body class="font-sans bg-white text-slate-800" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true', mobileMenu: false }" :class="{ 'dark bg-slate-900 text-slate-200': darkMode }">
+<body class="font-sans bg-white text-slate-800" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true', mobileMenu: false, enquireOpen: false, enquireService: '' }" :class="{ 'dark bg-slate-900 text-slate-200': darkMode }">
 
     <div class="min-h-screen flex flex-col">
 

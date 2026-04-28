@@ -331,5 +331,6 @@
             });
         }
     </script>
+<?php require __DIR__ . '/inc/enquiry-modal.php'; ?>
 </body>
 </html>
