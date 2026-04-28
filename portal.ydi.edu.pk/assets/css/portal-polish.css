@@ -851,13 +851,15 @@ a.profilecam.active {
     border: 2px solid #fff;
 }
 
+.chatbox-list,
+.chatbox { position: static !important; }
 .conversation-box {
     width: 360px !important;
-    max-width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px) !important;
     background: #fff !important;
     border: 0 !important;
     border-radius: 18px !important;
-    overflow: hidden;
+    overflow: hidden !important;
     box-shadow:
         0 32px 80px -20px rgba(15, 23, 42, .35),
         0 12px 28px -8px rgba(15, 23, 42, .15),
@@ -865,8 +867,13 @@ a.profilecam.active {
     position: fixed !important;
     right: 24px !important;
     bottom: 96px !important;
+    left: auto !important;
+    top: auto !important;
     z-index: 101 !important;
     display: none;
+    padding: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
 }
 .con-title {
     display: flex !important;
@@ -898,14 +905,12 @@ a.profilecam.active {
     content: "";
     width: 32px; height: 32px;
     border-radius: 50%;
-    background: rgba(255,255,255,.18);
-    -webkit-mask: linear-gradient(#fff,#fff);
-    background-image:
-        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23fff' stroke-width='1.8'><path stroke-linecap='round' stroke-linejoin='round' d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'/></svg>"),
-        rgba(255,255,255,.18);
+    background-color: rgba(255,255,255,.18);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='1.8'><path stroke-linecap='round' stroke-linejoin='round' d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'/></svg>");
     background-position: center;
     background-size: 18px;
     background-repeat: no-repeat;
+    flex: 0 0 32px;
 }
 .con-title a {
     width: 30px; height: 30px;
@@ -998,15 +1003,21 @@ a.profilecam.active {
     background: #fff !important;
     border-top: 1px solid #e2e8f0 !important;
     padding: 12px !important;
+    box-sizing: border-box;
 }
-.conversation-box .input-group {
+.conversation-box .input-group,
+.conversation-box .panel-footer .input-group {
     display: flex !important;
-    align-items: stretch;
-    gap: 8px;
-    width: 100%;
+    align-items: stretch !important;
+    gap: 8px !important;
+    width: 100% !important;
+    border-collapse: separate !important;
+    box-sizing: border-box;
 }
 .conversation-box .input-group .form-control {
-    flex: 1 !important;
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
     height: 40px !important;
     border: 1px solid #e2e8f0 !important;
     border-radius: 999px !important;
@@ -1016,6 +1027,7 @@ a.profilecam.active {
     color: #0f172a !important;
     box-shadow: none !important;
     transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+    box-sizing: border-box;
 }
 .conversation-box .input-group .form-control::placeholder { color: #94a3b8; }
 .conversation-box .input-group .form-control:focus {
@@ -1024,23 +1036,50 @@ a.profilecam.active {
     box-shadow: 0 0 0 4px rgba(124, 58, 237, .12) !important;
     outline: none !important;
 }
-.conversation-box .input-group-btn { display: inline-flex !important; }
-.conversation-box .input-group-btn .btn {
-    height: 40px !important; min-width: 40px;
+.conversation-box .input-group-btn {
+    display: inline-flex !important;
+    width: auto !important;
+    flex: 0 0 auto !important;
+    position: static !important;
+    vertical-align: middle;
+}
+.conversation-box .input-group-btn .btn,
+.conversation-box .input-group-btn #submit {
+    height: 40px !important;
+    min-width: 64px !important;
+    width: auto !important;
     background: #7c3aed !important;
     color: #fff !important;
     border: 0 !important;
     border-radius: 999px !important;
-    padding: 0 14px !important;
+    padding: 0 18px !important;
     font-weight: 600 !important;
     font-size: 13px !important;
     display: inline-flex !important;
-    align-items: center; justify-content: center; gap: 6px;
+    align-items: center !important; justify-content: center !important;
+    gap: 6px;
     box-shadow: 0 2px 8px rgba(124, 58, 237, .35) !important;
     transition: transform .15s ease, filter .15s ease;
+    white-space: nowrap !important;
+    box-sizing: border-box;
 }
 .conversation-box .input-group-btn .btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
 .conversation-box .input-group-btn .btn:active { transform: translateY(0); }
+
+/* Empty-state placeholder (replace whitespace-only ul issue) */
+.conversation-box .panel-body:has(> .chat:not(:has(li))) {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+.conversation-box .panel-body:has(> .chat:not(:has(li))) > .chat::after {
+    content: "Start a conversation with your trainer";
+    color: #94a3b8;
+    font-size: 13px;
+    text-align: center;
+    padding: 32px 24px;
+    display: block;
+}
 
 /* =============================================================
    Footer
