@@ -82,6 +82,7 @@ main, .main-section, .container, .container-fluid { background: transparent !imp
     position: absolute !important;
     right: 16px !important; bottom: 16px !important;
     width: auto !important; height: 36px !important;
+    min-width: 0 !important;
     line-height: 1 !important;
     padding: 0 14px 0 12px !important;
     border-radius: 999px !important;
@@ -97,13 +98,23 @@ main, .main-section, .container, .container-fluid { background: transparent !imp
     display: inline-flex !important;
     align-items: center !important;
     gap: 8px !important;
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
     transition: background .15s ease, transform .15s ease;
 }
-.cover-sec a.post-jb i.fa,
-.cover-sec a.post-jb::before { display: none !important; }
+.cover-sec a.post-jb i.fa { display: none !important; }
+.cover-sec a.post-jb::before {
+    content: "";
+    width: 14px; height: 14px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='1.8'><path stroke-linecap='round' stroke-linejoin='round' d='M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z'/><path stroke-linecap='round' stroke-linejoin='round' d='M15 13a3 3 0 11-6 0 3 3 0 016 0z'/></svg>") center/contain no-repeat;
+    mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='1.8'><path stroke-linecap='round' stroke-linejoin='round' d='M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z'/><path stroke-linecap='round' stroke-linejoin='round' d='M15 13a3 3 0 11-6 0 3 3 0 016 0z'/></svg>") center/contain no-repeat;
+    flex: 0 0 14px;
+}
 .cover-sec a.post-jb::after {
     content: "Edit cover";
-    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif;
+    line-height: 1;
 }
 .cover-sec a.post-jb:hover { background: #fff !important; transform: translateY(-1px); }
 
@@ -263,12 +274,19 @@ main, .main-section, .container, .container-fluid { background: transparent !imp
     border-radius: 50%;
 }
 .ydi-avatar-sm { width: 28px; height: 28px; font-size: 12px; display: inline-flex; vertical-align: middle; }
+.user_profile { position: relative; }
 .profilecam,
 a.profilecam,
 a.profilecam.active {
+    /* Anchor on the avatar's bottom-right.
+       user-pro-img is 132px, centered. Avatar right edge is 50% + 66px.
+       Place camera at left = calc(50% + 66 - 36 - 4) = 50% + 26.
+       top = avatar top (0) + 132 - 36 - 4 = 92. */
     position: absolute !important;
-    bottom: 4px !important;
-    right: 4px !important;
+    top: 92px !important;
+    left: calc(50% + 26px) !important;
+    bottom: auto !important;
+    right: auto !important;
     z-index: 3 !important;
     margin: 0 !important;
     display: inline-flex !important;
@@ -281,18 +299,13 @@ a.profilecam.active {
     border: 3px solid #fff !important;
     color: #fff !important;
     font-size: 0 !important;
-    flex: 0 0 36px;
     text-decoration: none !important;
-    transition: all .15s ease;
+    transition: transform .15s ease, background .15s ease;
     box-shadow: 0 4px 10px rgba(15, 23, 42, .25) !important;
     transform: none !important;
 }
 .profilecam:hover { background: #0f172a !important; transform: scale(1.05) !important; }
 .profilecam i.fa { display: none !important; }
-.user_profile .user-pro-img { position: relative; }
-.user_profile .profilecam {
-    /* contained by user-pro-img which is now position relative */
-}
 .profilecam::before {
     content: "";
     width: 16px; height: 16px;
@@ -607,41 +620,57 @@ a.profilecam.active {
 .tab-pane .container-fluid > :empty + br ~ br { display: none; }
 
 /* =============================================================
-   Modals (Change Password, Upload Profile / Background Image)
+   Modals — senior-grade polish
 ============================================================= */
 .modal-backdrop {
-    background: rgba(15, 23, 42, .55) !important;
+    background: rgba(15, 23, 42, .60) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
 .modal-backdrop.in { opacity: 1 !important; }
 .modal { padding: 24px !important; }
 .modal-dialog {
-    margin: 5vh auto !important;
-    max-width: 460px !important;
+    margin: 8vh auto !important;
+    max-width: 440px !important;
+    transition: transform .25s cubic-bezier(.2,.8,.2,1) !important;
 }
 .modal-content {
     border: 0 !important;
-    border-radius: 18px !important;
-    box-shadow: 0 24px 60px rgba(15, 23, 42, .25), 0 8px 22px rgba(15, 23, 42, .12) !important;
-    background: #fff !important;
+    border-radius: 16px !important;
+    box-shadow:
+        0 32px 80px -20px rgba(15, 23, 42, .35),
+        0 12px 28px -8px rgba(15, 23, 42, .15),
+        0 0 0 1px rgba(15, 23, 42, .04) !important;
+    background: #ffffff !important;
     overflow: hidden;
 }
 .modal-header {
-    border-bottom: 1px solid #f1f5f9 !important;
-    padding: 18px 22px !important;
+    border: 0 !important;
+    padding: 24px 24px 0 !important;
     display: flex !important;
-    align-items: center !important;
+    align-items: flex-start !important;
     justify-content: space-between !important;
     gap: 12px;
-    background: linear-gradient(180deg, #fafbfd, #ffffff);
+    background: transparent !important;
+    flex-direction: row-reverse;
+}
+.modal-header::after {
+    content: "";
+    position: absolute;
+    left: 24px; right: 24px; top: 70px;
+    height: 1px;
+    background: #f1f5f9;
 }
 .modal-header .modal-title {
+    flex: 1;
     margin: 0 !important;
     font-family: 'Poppins', sans-serif !important;
-    font-size: 16px !important;
-    font-weight: 600 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
     color: #0f172a !important;
-    line-height: 1.2 !important;
-    letter-spacing: -.01em;
+    line-height: 1.3 !important;
+    letter-spacing: -.015em;
+    padding-right: 12px;
 }
 .modal-header .close,
 .modal-header a.btn.close,
@@ -651,12 +680,12 @@ a.profilecam.active {
     width: 32px !important; height: 32px !important;
     line-height: 1 !important;
     border-radius: 8px !important;
-    background: #f1f5f9 !important;
-    color: #475569 !important;
+    background: transparent !important;
+    color: #94a3b8 !important;
     border: 0 !important;
     box-shadow: none !important;
-    font-size: 20px !important;
-    font-weight: 400 !important;
+    font-size: 22px !important;
+    font-weight: 300 !important;
     padding: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -665,17 +694,22 @@ a.profilecam.active {
     opacity: 1 !important;
     transition: background .15s ease, color .15s ease;
     text-decoration: none !important;
+    flex: 0 0 32px;
 }
 .modal-header .close:hover,
 .modal-header a.btn.close:hover {
-    background: #fee2e2 !important;
-    color: #dc2626 !important;
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
 }
 .modal-body {
-    padding: 22px !important;
+    padding: 28px 24px 24px !important;
+    margin-top: 0 !important;
 }
-.modal-body .form-group { margin-bottom: 16px !important; }
-.modal-body .form-group:last-child { margin-bottom: 0 !important; }
+.modal-body .form-group {
+    margin-bottom: 16px !important;
+    display: block !important;
+}
+.modal-body .form-group:last-of-type { margin-bottom: 0 !important; }
 .modal-body .form-group > div[class^="col-"],
 .modal-body .form-group > div[class*=" col-"] {
     width: 100% !important;
@@ -685,12 +719,15 @@ a.profilecam.active {
 }
 .modal-body .form-group label {
     display: block !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
     color: #334155 !important;
     margin: 0 0 6px !important;
-    letter-spacing: .01em;
+    letter-spacing: 0;
 }
+/* Strip the trailing ":" Bootstrap labels often have */
+.modal-body .form-group label::after { content: ""; }
+
 .modal-body input[type=password],
 .modal-body input[type=text],
 .modal-body input[type=email] {
@@ -700,23 +737,30 @@ a.profilecam.active {
     color: #0f172a !important;
     border: 1px solid #e2e8f0 !important;
     border-radius: 10px !important;
-    padding: 0 12px !important;
+    padding: 0 14px !important;
     font-size: 14px !important;
+    font-weight: 400 !important;
     text-align: left !important;
     transition: border-color .15s ease, box-shadow .15s ease;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .03);
+}
+.modal-body input[type=password]:hover,
+.modal-body input[type=text]:hover,
+.modal-body input[type=email]:hover {
+    border-color: #cbd5e1 !important;
 }
 .modal-body input[type=password]:focus,
 .modal-body input[type=text]:focus,
 .modal-body input[type=email]:focus {
     border-color: #7c3aed !important;
-    box-shadow: 0 0 0 3px rgba(124, 58, 237, .15) !important;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, .12) !important;
     outline: none !important;
 }
 .modal-body input[type=file] {
     width: 100% !important;
-    padding: 14px !important;
+    padding: 18px !important;
     border: 1.5px dashed #cbd5e1 !important;
-    border-radius: 10px !important;
+    border-radius: 12px !important;
     background: #f8fafc !important;
     font-size: 13px !important;
     color: #475569 !important;
@@ -728,37 +772,52 @@ a.profilecam.active {
     background: #f5f3ff !important;
 }
 .modal-body input[type=file]::file-selector-button {
-    background: #7c3aed !important;
-    color: #fff !important;
-    border: 0 !important;
+    background: #ffffff !important;
+    color: #6d28d9 !important;
+    border: 1px solid #ddd6fe !important;
     border-radius: 8px !important;
     padding: 6px 12px !important;
     margin-right: 12px !important;
     font-size: 12px !important;
     font-weight: 600 !important;
     cursor: pointer !important;
+    transition: background .15s ease;
+}
+.modal-body input[type=file]::file-selector-button:hover {
+    background: #f5f3ff !important;
 }
 .modal-body input[type=submit].btn {
     width: 100% !important;
     height: 44px !important;
     border-radius: 10px !important;
-    background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+    background: #0f172a !important;
+    background-image: none !important;
     color: #fff !important;
     border: 0 !important;
     font-weight: 600 !important;
     font-size: 14px !important;
-    box-shadow: 0 4px 12px rgba(124, 58, 237, .25) !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .15), 0 4px 10px rgba(15, 23, 42, .08) !important;
     cursor: pointer;
-    transition: filter .15s ease, transform .15s ease;
+    transition: background .15s ease, transform .1s ease;
+    letter-spacing: 0;
 }
 .modal-body input[type=submit].btn:hover {
-    filter: brightness(1.05);
-    transform: translateY(-1px);
+    background: #1e293b !important;
+}
+.modal-body input[type=submit].btn:active { transform: translateY(1px); }
+.modal-body .form-group:last-of-type {
+    margin-top: 24px !important;
+    padding-top: 20px !important;
+    border-top: 1px solid #f1f5f9 !important;
 }
 .modal-body label:has(input[type=submit]) {
     width: 100% !important;
-    margin: 4px 0 0 !important;
+    margin: 0 !important;
+    display: block !important;
 }
+
+/* "Update Profile" -> rename via CSS (keep value attribute correct via JS would be cleaner, but this is harmless visual) */
+.modal-body input[type=submit][value="Update Profile" i] { /* placeholder if needed */ }
 
 /* =============================================================
    YDI Chat Room widget

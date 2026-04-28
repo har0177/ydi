@@ -197,7 +197,7 @@
                 <div class="form-group">
                     <div class="col-xs-12 col-sm-4 col-sm-offset-3">
                         <label>
-                            <input type="submit" name="submit" value="Change Image" class="btn btn-lg btn-success">
+                            <input type="submit" name="submit" value="Save Cover Image" class="btn btn-lg btn-success">
                         </label>
                     </div>
                 </div>
@@ -235,7 +235,7 @@
                 <div class="form-group">
                     <div class="col-xs-12 col-sm-4 col-sm-offset-3">
                         <label>
-                            <input type="submit" name="submit" value="Change Image" class="btn btn-lg btn-success">
+                            <input type="submit" name="submit" value="Save Profile Photo" class="btn btn-lg btn-success">
                         </label>
                     </div>
                 </div>
@@ -282,7 +282,7 @@
                 <div class="form-group">
                     <div class="col-xs-12 col-sm-4 col-sm-offset-3">
                         <label>
-                            <input type="submit" name="submit" value="Update Profile" class="btn btn-lg btn-success">
+                            <input type="submit" name="submit" value="Update Password" class="btn btn-lg btn-success">
                         </label>
                     </div>
                 </div>
@@ -300,12 +300,12 @@
         <?php
         if (!empty(AdminLTE::student_image($this->session->user_logged, 'bg'))) {
             ?>
-            <img src="<?php echo site_url('images/' . AdminLTE::student_image($this->session->user_logged, 'bg')); ?>" alt="" onerror="this.style.display='none'">
+            <img src="<?php echo site_url('images/' . AdminLTE::student_image($this->session->user_logged, 'bg')); ?>" alt="" onerror="this.remove()">
             <?php
         }
         else {
             ?>
-            <img src="<?php echo site_url('assets/img/cover-default.jpg'); ?>" alt="" onerror="this.style.display='none'">
+            <img src="<?php echo site_url('assets/img/cover-default.jpg'); ?>" alt="" onerror="this.remove()">
             <?php
         }
         ?>
