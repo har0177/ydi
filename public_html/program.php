@@ -84,13 +84,24 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                     </div>
                 </div>
 
-                <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
+                <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-4">
                     <a href="index.php#ourCourses" class="inline-flex items-center gap-2 text-primary-500 hover:text-primary-600 font-medium transition-colors">
                         <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                         </svg>
                         Back to All Programs
                     </a>
+                    <button
+                        type="button"
+                        data-service="<?php echo htmlspecialchars($program->p_title, ENT_QUOTES, 'UTF-8'); ?>"
+                        @click="enquireService = $event.currentTarget.dataset.service; enquireOpen = true"
+                        class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                        Enquire Now
+                    </button>
                 </div>
             </div>
         </div>
