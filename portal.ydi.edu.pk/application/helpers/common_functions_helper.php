@@ -502,17 +502,24 @@ function upload_file($FILES,$file_element_name,$upload_path){
 if (!function_exists('array_columnn')) {
     function array_columnn($array, $columnKey, $indexKey = null)
     {
+        $has = function ($row, $key) {
+            if (is_object($row)) return property_exists($row, $key) || isset($row->$key);
+            if (is_array($row))  return array_key_exists($key, $row);
+            return false;
+        };
+        $get = function ($row, $key) {
+            return is_object($row) ? ($row->$key ?? null) : ($row[$key] ?? null);
+        };
         $result = array();
+        if (!is_array($array) && !($array instanceof Traversable)) return $result;
         foreach ($array as $subArray) {
-            if (is_null($indexKey) && array_key_exists($columnKey, $subArray)) {
-                $result[] = is_object($subArray)?$subArray->$columnKey: $subArray[$columnKey];
-            } elseif (array_key_exists($indexKey, $subArray)) {
+            if (is_null($indexKey) && $has($subArray, $columnKey)) {
+                $result[] = $get($subArray, $columnKey);
+            } elseif (!is_null($indexKey) && $has($subArray, $indexKey)) {
                 if (is_null($columnKey)) {
-                    $index = is_object($subArray)?$subArray->$indexKey: $subArray[$indexKey];
-                    $result[$index] = $subArray;
-                } elseif (array_key_exists($columnKey, $subArray)) {
-                    $index = is_object($subArray)?$subArray->$indexKey: $subArray[$indexKey];
-                    $result[$index] = is_object($subArray)?$subArray->$columnKey: $subArray[$columnKey];
+                    $result[$get($subArray, $indexKey)] = $subArray;
+                } elseif ($has($subArray, $columnKey)) {
+                    $result[$get($subArray, $indexKey)] = $get($subArray, $columnKey);
                 }
             }
         }

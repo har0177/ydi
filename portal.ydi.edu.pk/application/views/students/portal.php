@@ -1289,10 +1289,15 @@
 
 
     <?php
-    $regno = $this->db->escape($this->session->user_logged);
-    $year = (int) date("Y");
-    $qc = $this->db->query("SELECT SUM(paid) as paid, SUM(dues) as unpaid, MONTHNAME(date_of_payment) as date FROM fee WHERE reg_no = $regno AND year = $year GROUP BY MONTH(date_of_payment), MONTHNAME(date_of_payment) ORDER BY MONTH(date_of_payment)");
-    $rows = ($qc && method_exists($qc, 'result')) ? $qc->result() : [];
+    $rows = [];
+    try {
+        $regno = $this->db->escape($this->session->user_logged);
+        $year = (int) date("Y");
+        $qc = $this->db->query("SELECT SUM(paid) as paid, SUM(dues) as unpaid, MONTHNAME(date_of_payment) as date FROM fee WHERE reg_no = $regno AND year = $year GROUP BY MONTH(date_of_payment), MONTHNAME(date_of_payment) ORDER BY MONTH(date_of_payment)");
+        if ($qc && method_exists($qc, 'result')) $rows = $qc->result();
+    } catch (\Throwable $e) {
+        $rows = [];
+    }
     $paid   = json_encode(array_columnn($rows, 'paid'), JSON_NUMERIC_CHECK);
     $unpaid = json_encode(array_columnn($rows, 'unpaid'), JSON_NUMERIC_CHECK);
     $datee  = json_encode(array_columnn($rows, 'date'), JSON_NUMERIC_CHECK);
@@ -1359,13 +1364,18 @@
     </script>
 
     <?php
-    $this->db->select('*');
-    $this->db->from('student');
-    $this->db->join('interview', 'interview.regno = student.reg_no');
-    $this->db->where(array(
-        'student.reg_no' => $this->session->user_logged,
-        'interview.status' => 1));
-    $query = $this->db->get();
+    $query = false;
+    try {
+        $this->db->select('*');
+        $this->db->from('student');
+        $this->db->join('interview', 'interview.regno = student.reg_no');
+        $this->db->where(array(
+            'student.reg_no' => $this->session->user_logged,
+            'interview.status' => 1));
+        $query = $this->db->get();
+    } catch (\Throwable $e) {
+        $query = false;
+    }
 
     $compre = 0;
     $grac = 0;
