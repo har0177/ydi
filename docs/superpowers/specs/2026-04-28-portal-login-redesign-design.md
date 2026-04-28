@@ -22,7 +22,7 @@ The redesign must:
 
 **Layout:** Split screen.
 
-- **Left (≈52% width):** Brand hero. Purple→blue mesh gradient identical to the FB-cover gradient already in `portal-polish.css` (`linear-gradient(135deg, #7c3aed 0%, #6d28d9 35%, #3b82f6 100%)`), dotted texture overlay, soft radial highlights. Contents: brand mark + "YDI Student Portal" wordmark, status pill ("Spring 2026 cohort is live"), large welcome headline, supporting lede, footer line.
+- **Left (≈52% width):** Brand hero. Purple→blue mesh gradient identical to the FB-cover gradient already in `portal-polish.css` (`linear-gradient(135deg, #7c3aed 0%, #6d28d9 35%, #3b82f6 100%)`), dotted texture overlay, soft radial highlights. Contents: brand mark + "YDI Student Portal" wordmark, large welcome headline, supporting lede, footer line. (No status pill — see "Out of scope.")
 - **Right (≈48% width):** Polished form on a white surface. Slate labels, soft `#f8fafc` inputs that focus to white with a purple ring, password show/hide toggle, "Keep me signed in" checkbox, "Forgot password?" link, full-width purple-gradient "Sign in" button, "Trouble signing in? Contact support" footer.
 
 **Personality:** Cohesive (same gradient, type, radii, and palette as the rest of the portal) *and* welcoming (the hero side gives the page presence rather than treating login as just a chore).
@@ -59,9 +59,6 @@ All values are reusable extensions of patterns already in `portal-polish.css` �
 A simple white rounded-square tile (32×32) with a purple "Y" glyph, replacing the `mis.ydi.edu.pk/images/logo.jpg` image. Reasons: the current logo is a different palette (purple/blue circular logo with "Training & Consultancy" text underneath) that conflicts with the gradient hero, and remote-loading from `mis.ydi.edu.pk` is a fragile dependency for a login page.
 
 The full color logo is not removed from the codebase — it stays available for the post-login portal. The login page just uses the simpler mark.
-
-### Status pill
-Optional small pill above the headline showing a current event/announcement. First implementation: hardcoded "Spring 2026 cohort is live" with a green pulse dot. Easy to remove or wire to a config value later. Hidden on mobile.
 
 ### Form fields
 - **Username** — text input, person/avatar icon on the right, name `username` (unchanged), `required` (unchanged).
@@ -109,6 +106,7 @@ Same right-side surface, swapped in via the existing jQuery toggle (`$('.widget-
 - Social login, SSO, captcha — none currently exist; not adding them.
 - New password reset flow — the existing email-instructions flow stays exactly as-is, only restyled.
 - Updating the `mis.ydi.edu.pk` admin login — different app, different scope.
+- Any hero-side dynamic content (status pill, announcements, cohort info, stats). The page must not display hardcoded or dummy content. If a dynamic-content slot is added later, it must be sourced from the database/controller.
 
 ---
 
@@ -127,5 +125,4 @@ Same right-side surface, swapped in via the existing jQuery toggle (`$('.widget-
 
 ## Open questions to resolve during implementation
 
-- Confirm whether the status pill should ship in v1 or be removed until the copy can be made dynamic. Default: ship hardcoded.
 - Decide whether to keep the new styles in `portal-polish.css` or split into a dedicated `portal-login.css`. Default: dedicated file, loaded only on the login view.
