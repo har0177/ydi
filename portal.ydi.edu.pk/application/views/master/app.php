@@ -17,9 +17,96 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/lib/slick/slick.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/lib/slick/slick-theme.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/style.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/css/portal-polish.css">
+
+        <!-- YDI design system: Tailwind + fonts (matches ydi.edu.pk) -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                50: '#f5f3ff', 100: '#ede9fe', 200: '#ddd6fe', 300: '#c4b5fd',
+                                400: '#a78bfa', 500: '#7c3aed', 600: '#6d28d9', 700: '#5b21b6',
+                                800: '#4c1d95', 900: '#3b0764'
+                            },
+                            secondary: {
+                                50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+                                400: '#60a5fa', 500: '#3b82f6', 600: '#1e40af', 700: '#1e3a8a',
+                                800: '#1e3a8a', 900: '#172554'
+                            }
+                        },
+                        fontFamily: {
+                            'sans': ['Inter', 'system-ui', 'sans-serif'],
+                            'display': ['Poppins', 'system-ui', 'sans-serif']
+                        }
+                    }
+                }
+            }
+        </script>
 
         <script src = "<?php echo base_url(); ?>dist/highcharts.js"></script>
         <script src="<?php echo base_url(); ?>dist/exporting.js"></script>
+        <script>
+            if (window.Highcharts) {
+                Highcharts.setOptions({
+                    colors: ['#7c3aed', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#ec4899', '#8b5cf6'],
+                    chart: {
+                        backgroundColor: 'transparent',
+                        style: { fontFamily: 'Inter, system-ui, sans-serif' },
+                        spacing: [16, 8, 12, 8]
+                    },
+                    title: {
+                        style: { color: '#0f172a', fontSize: '14px', fontWeight: '600', fontFamily: 'Poppins, sans-serif' },
+                        align: 'left', x: 8, y: 4
+                    },
+                    subtitle: { style: { color: '#64748b', fontSize: '11px' } },
+                    xAxis: {
+                        gridLineColor: '#f1f5f9',
+                        lineColor: '#e2e8f0',
+                        tickColor: '#e2e8f0',
+                        labels: { style: { color: '#64748b', fontSize: '11px', fontWeight: '500' } },
+                        title: { style: { color: '#94a3b8', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.06em' } }
+                    },
+                    yAxis: {
+                        gridLineColor: '#f1f5f9',
+                        lineColor: 'transparent',
+                        tickColor: 'transparent',
+                        labels: { style: { color: '#94a3b8', fontSize: '11px' } },
+                        title: { style: { color: '#94a3b8', fontSize: '10px' } }
+                    },
+                    legend: {
+                        itemStyle: { color: '#475569', fontSize: '11px', fontWeight: '500' },
+                        itemHoverStyle: { color: '#0f172a' },
+                        itemMarginTop: 4, itemMarginBottom: 4,
+                        symbolRadius: 4
+                    },
+                    tooltip: {
+                        backgroundColor: '#0f172a',
+                        borderColor: 'transparent',
+                        borderRadius: 8,
+                        style: { color: '#fff', fontSize: '12px' },
+                        useHTML: false,
+                        padding: 10
+                    },
+                    plotOptions: {
+                        column: { borderRadius: 6, borderWidth: 0, pointPadding: 0.1, groupPadding: 0.12 },
+                        bar:    { borderRadius: 6, borderWidth: 0 },
+                        line:   { lineWidth: 2.5, marker: { radius: 4, lineWidth: 2, lineColor: '#fff' } },
+                        area:   { lineWidth: 2.5 },
+                        pie:    { borderWidth: 0, dataLabels: { style: { color: '#0f172a', fontWeight: '500', textOutline: 'none' } } },
+                        series: { animation: { duration: 900 } }
+                    },
+                    credits: { enabled: false },
+                    exporting: { enabled: false }
+                });
+            }
+        </script>
+        <script defer src="<?php echo base_url(); ?>assets/js/portal-gamification.js"></script>
         <style>
             .responsive-table {
                 width: 100%;
@@ -135,29 +222,38 @@
                     </div><!--logo end-->
 
                     <div class="user-account">
+                        <a href="https://www.ydi.edu.pk/quiz.php" id="buttona" target="_blank" title="Quizes">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            <span>Quizes</span>
+                        </a>
+
+                        <a href="#passwordmodel" data-toggle="modal" class="ydi-icon-btn" title="Password setting">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 10-8 0v4h8z"/></svg>
+                        </a>
+
                         <div class="user-info">
                             <?php
                             if (empty(AdminLTE::student_image($this->session->user_logged, 'profile'))) {
                                 ?>
-                                <img  src="https://mis.ydi.edu.pk/images/<?php echo AdminLTE::student_image($this->session->user_logged, 'img'); ?>" height="40px" width="40px" alt="<?php echo $this->session->user_name ?>">
+                                <img  src="https://mis.ydi.edu.pk/images/<?php echo AdminLTE::student_image($this->session->user_logged, 'img'); ?>" height="40px" width="40px" alt="<?php echo $this->session->user_name ?>" onerror="this.outerHTML='<div class=&quot;ydi-avatar-fallback ydi-avatar-sm&quot;>'+(this.alt?this.alt.charAt(0).toUpperCase():'?')+'</div>'">
                                 <?php
                             }
                             else {
                                 ?>
-                                <img  src="<?php echo site_url('images/' . AdminLTE::student_image($this->session->user_logged, 'profile')); ?>" height="40px" width="40px" alt="<?php echo $this->session->user_name ?>">        
+                                <img  src="<?php echo site_url('images/' . AdminLTE::student_image($this->session->user_logged, 'profile')); ?>" height="40px" width="40px" alt="<?php echo $this->session->user_name ?>">
                             <?php } ?>
-                            <a href="#" title="<?php echo $this->session->user_name ?>"><?php echo $this->session->user_name ?></a><i class="fa fa-arrow-circle-down"></i>
-
-                            <a href="https://www.ydi.edu.pk/quiz.php" id="buttona" target="_blank" class="btn btn-sm btn-danger w3-animate-fading w3-animate-top"><img src="http://www.animatedgif.net/new/new6__e0.gif"/> Quizes</a>
+                            <a href="#" title="<?php echo $this->session->user_name ?>"><?php echo $this->session->user_name ?></a>
+                            <i class="fa fa-arrow-circle-down"></i>
                         </div>
 
-                        <div class="user-account-settingss">
+                        <a href="<?php echo base_url('user/logout'); ?>" class="ydi-icon-btn" title="Logout">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        </a>
 
-                            <ul class="us-links">
-                                <li><a class="post-jb3 active"  href='#passwordmodel' data-toggle='modal'>Password Setting</a></li>
-                            </ul>
-                            <h3 class="tc"><a href="<?php echo base_url('user/logout'); ?>"> <i class="ace-icon fa fa-power-off"></i> Logout</a></h3>
-                        </div><!--user-account-settingss end-->
+                        <div class="user-account-settingss" style="display:none">
+                            <ul class="us-links"></ul>
+                            <h3 class="tc"><a href="<?php echo base_url('user/logout'); ?>"></a></h3>
+                        </div>
                     </div>
                 </div><!--header-data end-->
             </div>
@@ -223,7 +319,7 @@
             <div class="footy-sec mn no-margin">
                 <div class="container">
 
-                    <p>Copyright 2019 by Xpertz Dev</p>
+                    <p>Copyright <?php echo date('Y'); ?> by Xpertz Dev</p>
 
                 </div>
             </div>

@@ -927,6 +927,83 @@ FROM trainer_data where regno = $id and WEEKOFYEAR(date)=WEEKOFYEAR('$date')");
         }
     }
 
+    /**
+     * Aggregate real-data stats for the student gamification panel.
+     * Returns counts/percentages from attend, trainer_data, fee tables.
+     * Safe defaults (0) when a student has no rows.
+     */
+    public static function game_stats($id) {
+        $CI = & get_instance();
+        $id = $CI->db->escape_str($id);
+
+        $admission = self::student_data($id, 'do_admission');
+        $courseId  = self::student_data($id, 'course');
+        $daysEnrolled = 0;
+        if ($admission && $admission !== '0000-00-00') {
+            $ts = strtotime($admission);
+            if ($ts && $ts > strtotime('1971-01-01')) {
+                $daysEnrolled = max(0, (int) floor((time() - $ts) / 86400));
+            }
+        }
+
+        $present = (int) self::_scalar("SELECT COUNT(*) c FROM attend WHERE std_id='$id' AND status=1");
+        $absent  = (int) self::_scalar("SELECT COUNT(*) c FROM attend WHERE std_id='$id' AND status=2");
+        $totalAttendRows = $present + $absent;
+        $attendancePct = $totalAttendRows > 0 ? round($present / $totalAttendRows * 100) : 0;
+
+        $reports   = (int) self::_scalar("SELECT COUNT(*) c FROM trainer_data WHERE regno='$id'");
+        $avgScore  = (int) self::_scalar("SELECT IFNULL(ROUND(AVG(percentage)),0) c FROM trainer_data WHERE regno='$id'");
+        $bestScore = (int) self::_scalar("SELECT IFNULL(MAX(percentage),0) c FROM trainer_data WHERE regno='$id'");
+        $latestScore = (int) self::_scalar("SELECT IFNULL(percentage,0) c FROM trainer_data WHERE regno='$id' ORDER BY date DESC LIMIT 1");
+
+        $thisYear = (int) date('Y');
+        $feePaid = (int) self::_scalar("SELECT IFNULL(SUM(paid),0) c FROM fee WHERE reg_no='$id' AND year=$thisYear");
+        $feeDues = (int) self::_scalar("SELECT IFNULL(SUM(dues),0) c FROM fee WHERE reg_no='$id'");
+
+        $rank = 0;
+        if ($courseId) {
+            $courseEsc = $CI->db->escape_str($courseId);
+            $rank = (int) self::_scalar("SELECT FIND_IN_SET(percentage, (SELECT GROUP_CONCAT(DISTINCT percentage ORDER BY percentage DESC) FROM trainer_data WHERE course='$courseEsc' AND WEEKOFYEAR(date)=WEEKOFYEAR(CURDATE()))) c FROM trainer_data WHERE regno='$id' AND WEEKOFYEAR(date)=WEEKOFYEAR(CURDATE()) LIMIT 1");
+        }
+
+        // Real attendance streak: consecutive present days from latest backwards
+        $streak = 0;
+        $q = $CI->db->query("SELECT status, date FROM attend WHERE std_id='$id' ORDER BY date DESC LIMIT 60");
+        if ($q && $q->num_rows() > 0) {
+            foreach ($q->result() as $row) {
+                if ((int) $row->status === 1) $streak++;
+                else break;
+            }
+        }
+
+        // XP from real activity, not tenure
+        $xp = $present + ($reports * 3);
+
+        return array(
+            'days_enrolled'   => $daysEnrolled,
+            'present'         => $present,
+            'absent'          => $absent,
+            'attendance_pct'  => $attendancePct,
+            'reports'         => $reports,
+            'avg_score'       => $avgScore,
+            'best_score'      => $bestScore,
+            'latest_score'    => $latestScore,
+            'rank'            => $rank,
+            'fee_paid'        => $feePaid,
+            'fee_dues'        => $feeDues,
+            'streak'          => $streak,
+            'xp'              => $xp,
+        );
+    }
+
+    private static function _scalar($sql) {
+        $CI = & get_instance();
+        $q = $CI->db->query($sql);
+        if (!$q || $q->num_rows() === 0) return 0;
+        $row = $q->row_array();
+        return reset($row);
+    }
+
     public static function sms_balance() {
 
         $id = "rchyouthins";

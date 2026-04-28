@@ -22,6 +22,7 @@
                 <link rel="stylesheet" href="<?php echo base_url() ?>css/ace-part2.min.css" />
         <![endif]-->
         <link rel="stylesheet" href="<?php echo base_url() ?>dist/css/ace-rtl.min.css" />
+        <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/portal-polish.css" />
 
         <!--[if lte IE 9]>
           <link rel="stylesheet" href="<?php echo base_url() ?>css/ace-ie.min.css" />
@@ -193,7 +194,7 @@
                                 <span class="bigger-120" style="color: #fff">
                                     <span class="blue bolder">YDI</span>
                                     <br>
-                                    Xpertz Dev &copy; 2019 
+                                    Xpertz Dev &copy; <?php echo date('Y'); ?>
                                 </span>
 
                                 &nbsp; &nbsp;

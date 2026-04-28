@@ -70,6 +70,9 @@ class Student extends CI_Controller {
 
     public function portal() {
 
+        if (!$this->session->has_userdata('user_logged')) {
+            redirect('/');
+        }
 
         $this->template->title('Student Portal');
 
